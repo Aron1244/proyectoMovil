@@ -1,0 +1,41 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title> AsistApp </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">AsistApp</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    <ion-list>
+      <ion-item lines="none">
+        <ion-input [(ngModel)]="username" position="floating" placeholder=""
+          >Usuario</ion-input
+        >
+      </ion-item>
+      <ion-item lines="none">
+        <ion-input
+          [(ngModel)]="password"
+          position="floating"
+          type="password"
+          value="password"
+          >Contraseña</ion-input
+        >
+      </ion-item>
+      <br />
+      <a>Restablecer contraseña</a>
+      <br />
+      <ion-button (click)="validateLogin()">Ingresar</ion-button>
+    </ion-list>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>Footer</ion-title>
+  </ion-toolbar>
+</ion-footer>
