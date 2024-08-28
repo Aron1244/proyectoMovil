@@ -5,11 +5,19 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
-    <ion-button expand="block">Informacion Personal</ion-button>
+    <ion-button
+      expand="block"
+      (click)="goToUserInfo()"
+      >Informacion Personal</ion-button
+    >
     <br />
-    <ion-button expand="block">Clases Programadas</ion-button>
+    <ion-button expand="block" [routerLink]="['/clases']"
+      >Clases Programadas</ion-button
+    >
     <br />
-    <ion-button expand="block">Historial de asistencia</ion-button>
+    <ion-button expand="block" [routerLink]="['/historial']"
+      >Historial de asistencia</ion-button
+    >
   </ion-content>
 </ion-menu>
 <div class="ion-page" id="main-content">
@@ -39,15 +47,21 @@
 
   <div id="container">
     <h1>Bienvenido {{user}}</h1>
-    <br>
+    <br />
     <ion-button>
       <ion-icon slot="start" name="qr-code"></ion-icon>
       Escanear QR
+    </ion-button>
+    <br />
+    <br />
+    <ion-button (click)="logOut()">
+      <ion-icon slot="start" name="log-out"></ion-icon>
+      Log Out
     </ion-button>
   </div>
 </ion-content>
 <ion-footer>
   <ion-toolbar>
-    <ion-title>Footer</ion-title>
+    <ion-title>App desarrollada por {{developer}}</ion-title>
   </ion-toolbar>
 </ion-footer>

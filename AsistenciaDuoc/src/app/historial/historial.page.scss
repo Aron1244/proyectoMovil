@@ -1,0 +1,34 @@
+#container {
+  text-align: center;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+ion-toolbar {
+  --background: #dddddd;
+  --color: #1d1d1d;
+}
+
+ion-content {
+  --background: #ffffff;
+}
+
+ion-list {
+  background-color: #ffffff;
+}
+
+ion-item {
+  --background: #ffffff;
+}
+
+ion-button {
+  --background: #dddddd;
+}
+
+.btnRegreso{
+  color: #1d1d1d;
+}
