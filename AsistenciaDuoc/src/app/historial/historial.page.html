@@ -11,9 +11,62 @@
     </ion-toolbar>
   </ion-header>
 
+  <div class="square">
+    <div size="large">Asistencia</div>
+    <br>
+
+    <ion-accordion-group>
+      <ion-accordion value="first">
+        <ion-item slot="header" color="light">
+          <ion-label>Matematica</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">Nro clases registradas  5</div>
+        <div class="ion-padding" slot="content">Asistencia   2</div>
+      </ion-accordion>
+
+      <ion-accordion value="second">
+        <ion-item slot="header" color="light">
+          <ion-label>Programacion</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">Nro clases registradas 5</div>
+        <div class="ion-padding" slot="content">Asistencia 4</div>
+      </ion-accordion>
+
+
+      <ion-accordion value="third">
+        <ion-item slot="header" color="light">
+          <ion-label>Etica para el Trabajo</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">Nro clases registradas 5</div>
+        <div class="ion-padding" slot="content">Asistencia 4</div>
+      </ion-accordion>
+
+
+      <ion-accordion value="four">
+        <ion-item slot="header" color="light">
+          <ion-label> Diseño y requesito de software</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">Nro clases registradas: 5</div>
+        <div class="ion-padding" slot="content">Asistencia: 3</div>
+        
+      </ion-accordion>
+    </ion-accordion-group>
+
+    
+
+  </div>
+
   <ion-back-button
     class="btnRegreso"
     icon="arrow-back-outline"
     defaultHref="/home"
   ></ion-back-button>
+
+    
+
 </ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>Footer</ion-title>
+  </ion-toolbar>
+</ion-footer>
