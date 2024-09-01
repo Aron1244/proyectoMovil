@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class UserInfoPage implements OnInit {
   user!: string;
   nombre: string = 'Admin';
+  developer:String='ByteForge';
 
   constructor(private router: Router) {
     const navigation = this.router.getCurrentNavigation();

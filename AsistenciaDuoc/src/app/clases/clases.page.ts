@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./clases.page.scss'],
 })
 export class ClasesPage implements OnInit {
-
+  developer:String='ByteForge';
   constructor() { }
 
   ngOnInit() {

@@ -11,65 +11,60 @@
     </ion-toolbar>
   </ion-header>
 
-  <h2>Usuario:  {{user}}</h2>
-  
-  <h3 > Informacion basica</h3>
-  <ion-list>
-    <ion-item lines="none">
-      <ion-input label="Nombre" [(ngModel)]="nombre" maxlength="50"></ion-input>
-    </ion-item>
+  <div class="container">
+    <h2>Usuario: {{user}}</h2>
 
-    <ion-item lines="none">
-      <ion-input label="Direccion de correo:"> </ion-input>
-      <p>admin&#64;duocuc.com</p>
-    </ion-item>
-
-    <ion-item lines="none">
-      <ion-input label="Id Estudiante:"></ion-input>
-        <p>207688648</p>
-    </ion-item>
-
-  </ion-list>
-
-    <h3>Informacion Adicional</h3>
+    <h3>Informacion basica</h3>
     <ion-list>
-      <ion-item >
-        <ion-input label="Fecha de nacimiento:"></ion-input>
-        <p>02 de marzo del 2000</p>
+      <ion-item lines="none">
+        <label>Direccion de correo: </label>
+        <p class="right-text">admin&#64;duocuc.com</p>
       </ion-item>
 
-      <ion-item >
-        <ion-input label="Sexo:"></ion-input>
-        <p>Masculino</p>
-      </ion-item>
-
-      <ion-item>
-        <ion-input label="Ocupacion:" ></ion-input>
-        <p>Estudiante</p>
-      </ion-item>
-
-      <ion-item>
-        <ion-input label="Telefono:" ></ion-input>
-        <p>+56 9 5896 6368</p>
-      </ion-item>
-
-      <ion-item>
-        <ion-input label="Carrera:" ></ion-input>
-        <p>Ingenieria</p>
+      <ion-item lines="none">
+        <label>Id Estudiante: </label>
+        <p class="right-text">207688648</p>
       </ion-item>
     </ion-list>
 
-  
+    <h3>Informacion Adicional</h3>
+    <ion-list>
+      <ion-item lines="none">
+        <label>Fecha de nacimiento:</label>
+        <p class="right-text">02 de marzo del 2000</p>
+      </ion-item>
 
-  <ion-back-button
-    class="btnRegreso"
-    icon="arrow-back-outline"
-    defaultHref="/home"
-  ></ion-back-button>
+      <ion-item lines="none">
+        <label>Sexo:</label>
+        <p class="right-text">Masculino</p>
+      </ion-item>
+
+      <ion-item lines="none">
+        <label>Ocupación:</label>
+        <p class="right-text">Estudiante</p>
+      </ion-item>
+
+      <ion-item lines="none">
+        <label>Teléfono:</label>
+        <p class="right-text">+56 9 5896 6368</p>
+      </ion-item>
+
+      <ion-item lines="none">
+        <label>Carrera:</label>
+        <p class="right-text">Ingenieria</p>
+      </ion-item>
+    </ion-list>
+
+    <ion-back-button
+      class="btnRegreso"
+      icon="arrow-back-outline"
+      defaultHref="/home"
+    ></ion-back-button>
+  </div>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-title>Footer</ion-title>
+    <ion-title>App desarrollada por {{developer}}</ion-title>
   </ion-toolbar>
 </ion-footer>

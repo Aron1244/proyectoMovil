@@ -10,6 +10,7 @@ import { ToastController } from '@ionic/angular';
 export class LoginPage implements OnInit {
   username!: String;
   password!: String;
+  developer:String='ByteForge';
 
   constructor(private router: Router, private toaster: ToastController) {}
 
