@@ -9,35 +9,43 @@
 }
 
 ion-toolbar {
-  --background: #2F4550;
-  --color: #F4F4F9;
+  --background: #2f4550;
+  --color: #f4f4f9;
   font-family: system-ui, sans-serif;
   text-align: center;
 }
 
-ion-title{
+ion-title {
   font-size: medium;
 }
 
 ion-content {
-  --background: #F4F4F9;
+  --background: #f4f4f9;
   font-family: system-ui, sans-serif;
 }
 
 ion-list {
-  background-color: #F4F4F9;
+  background-color: #f4f4f9;
 }
 
 ion-item {
-  --background: #F4F4F9;
+  --background: #f4f4f9;
 }
 
 ion-button {
   --background: #2f4550;
 }
 
-.btnRegreso{
+.regreso {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnRegreso {
   color: #2f4550;
+  --border-radius: 50%;
+  width: 5px;
 }
 
 h1 {
@@ -49,34 +57,28 @@ h1 {
 ion-accordion-group {
   ion-accordion {
     background: #2f4550;
-    color: #F4F4F9;
+    color: #f4f4f9;
     font-family: system-ui, sans-serif;
 
     ion-item {
       --background: #2f4550;
-      --color: #F4F4F9;
+      --color: #f4f4f9;
       font-family: system-ui, sans-serif;
     }
 
     div[slot="content"] {
       background: #2f4550;
-      color: #F4F4F9;
+      color: #f4f4f9;
       font-family: system-ui, sans-serif;
     }
 
     ion-card {
       background: #2f4550;
-      color: #F4F4F9;
+      color: #f4f4f9;
       font-family: system-ui, sans-serif;
     }
   }
 }
-
-
-
-
-
-
 
 .square {
   width: 100%;
