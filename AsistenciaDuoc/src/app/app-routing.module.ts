@@ -31,7 +31,11 @@ const routes: Routes = [
     path: 'historial',
     loadChildren: () =>
       import('./historial/historial.module').then((m) => m.HistorialPageModule),
+  },  {
+    path: 'rest-pass',
+    loadChildren: () => import('./rest-pass/rest-pass.module').then( m => m.RestPassPageModule)
   },
+
 ];
 
 @NgModule({
