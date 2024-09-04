@@ -1,6 +1,6 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>rest_pass</ion-title>
+    <ion-title>Recuperar contraseña</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,4 +10,53 @@
       <ion-title size="large">rest_pass</ion-title>
     </ion-toolbar>
   </ion-header>
+    <ion-item lines="none">
+      <h6>Ingrese la dirección de correo electrónico verificada de su cuenta de usuario y le enviaremos un codigo para restablecer la contraseña.</h6>
+    </ion-item>
+    
+
+    
+      <ion-list >
+        <ion-item lines="none" >
+          <label for="username">Ingrese su Usuario </label>
+
+          <ion-input
+            type="text"
+            
+            
+            labelPlacement="floating"
+            helperText="Ingrese un Usuario valido"
+            errorText="Usuario Invalido"
+            ngModel
+            username
+          ></ion-input>
+          
+        </ion-item>
+        <ion-item lines="none" >
+          <ion-button id="present-alert" [routerLink]="['/login']">Enviar</ion-button>
+          
+          <ion-alert 
+            trigger="present-alert"
+            header="Recibido"
+            
+            message="Se ha enviado un Codigo a su correo."
+            [buttons]="alertButtons"
+
+          ></ion-alert>
+        </ion-item>
+      </ion-list>
+
+
+      <div class="regreso">
+        <ion-back-button class="btnRegreso" icon="arrow-back-outline" defaultHref="/home"></ion-back-button>
+      </div>
+    
+
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>App desarrollada por {{developer}}</ion-title>
+  </ion-toolbar>
+</ion-footer>
+

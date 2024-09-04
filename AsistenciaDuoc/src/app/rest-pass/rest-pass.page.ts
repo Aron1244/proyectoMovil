@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RestPassPage implements OnInit {
 
+  developer: String = 'ByteForge'
+  Correo!: String;
+  alertButtons = ['Aceptar'] ;
+  
   constructor() { }
 
+  
+
+    
+
   ngOnInit() {
+    
   }
 
 }
