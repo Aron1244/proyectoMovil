@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { LoginService } from '../services/login.service';
+import { LoginService } from './../../services/login.service';
 
 @Component({
   selector: 'app-login',
