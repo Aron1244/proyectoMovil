@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () =>
-      import('./home/home.module').then((m) => m.HomePageModule),
+      import('./pages/home/home.module').then((m) => m.HomePageModule),
   },
   {
     path: '',
@@ -15,25 +15,26 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () =>
-      import('./login/login.module').then((m) => m.LoginPageModule),
+      import('./pages/login/login.module').then((m) => m.LoginPageModule),
   },
   {
     path: 'user-info',
     loadChildren: () =>
-      import('./user-info/user-info.module').then((m) => m.UserInfoPageModule),
+      import('./pages/user-info/user-info.module').then((m) => m.UserInfoPageModule),
   },
   {
     path: 'clases',
     loadChildren: () =>
-      import('./clases/clases.module').then((m) => m.ClasesPageModule),
+      import('./pages/clases/clases.module').then((m) => m.ClasesPageModule),
   },
   {
     path: 'historial',
     loadChildren: () =>
-      import('./historial/historial.module').then((m) => m.HistorialPageModule),
-  },  {
+      import('./pages/historial/historial.module').then((m) => m.HistorialPageModule),
+  },
+  {
     path: 'rest-pass',
-    loadChildren: () => import('./rest-pass/rest-pass.module').then( m => m.RestPassPageModule)
+    loadChildren: () => import('./pages/rest-pass/rest-pass.module').then( m => m.RestPassPageModule)
   },
 
 ];
