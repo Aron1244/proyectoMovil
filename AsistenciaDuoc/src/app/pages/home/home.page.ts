@@ -35,6 +35,7 @@ export class HomePage {
       message: 'Has cerrado sesión exitosamente.',
       duration: 2000,
       position: 'top',
+      color: 'secondary',
     });
     toast.present();
   }
@@ -42,5 +43,17 @@ export class HomePage {
     this.router.navigate(['/user-info'], {
       state: { user: this.user },
     });
+  }
+
+  async leerQr() {
+    const toast = await this.toaster.create({
+      message: 'Leer código QR',
+      duration: 2000,
+      position: 'middle',
+      color: 'primary',
+      icon: 'qr-code-outline',
+    });
+
+    toast.present();
   }
 }

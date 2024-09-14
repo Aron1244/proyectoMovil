@@ -1,13 +1,17 @@
 ion-toolbar {
   --background: #2f4550;
-  --color: #1d1d1d;
+  background: #2f4550;
+  --color: #f4f4f9;
+  font-family: system-ui, sans-serif;
+  text-align: center;
 }
 
 ion-title {
-  text-align: center;
-  color: #f4f4f9;
-  font-size: medium;
-  font-family: system-ui, sans-serif;
+  font-size: 4vw;
+}
+
+.titleFooter {
+  font-size: 3vw;
 }
 
 ion-content {
@@ -46,10 +50,22 @@ ion-button {
   transform: translateY(-50%);
 }
 
-h6 {
+span {
   text-align: justify;
 }
 
 .logo {
   width: 60px;
+}
+
+.regreso {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnRegreso {
+  color: #2f4550;
+  --border-radius: 50%;
+  width: 5px;
 }

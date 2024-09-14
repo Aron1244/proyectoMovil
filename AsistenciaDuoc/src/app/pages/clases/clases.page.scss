@@ -10,13 +10,18 @@
 
 ion-toolbar {
   --background: #2f4550;
+  background: #2f4550;
   --color: #f4f4f9;
   font-family: system-ui, sans-serif;
   text-align: center;
 }
 
 ion-title {
-  font-size: medium;
+  font-size: 4vw;
+}
+
+.titleFooter {
+  font-size: 3vw;
 }
 
 ion-content {
