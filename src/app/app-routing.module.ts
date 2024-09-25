@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 const routes: Routes = [
   {
     path: 'home',
     loadChildren: () =>
       import('./pages/home/home.module').then((m) => m.HomePageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: '',
@@ -20,23 +23,34 @@ const routes: Routes = [
   {
     path: 'user-info',
     loadChildren: () =>
-      import('./pages/user-info/user-info.module').then((m) => m.UserInfoPageModule),
+      import('./pages/user-info/user-info.module').then(
+        (m) => m.UserInfoPageModule
+      ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'clases',
     loadChildren: () =>
       import('./pages/clases/clases.module').then((m) => m.ClasesPageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'historial',
     loadChildren: () =>
-      import('./pages/historial/historial.module').then((m) => m.HistorialPageModule),
+      import('./pages/historial/historial.module').then(
+        (m) => m.HistorialPageModule
+      ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'rest-pass',
-    loadChildren: () => import('./pages/rest-pass/rest-pass.module').then( m => m.RestPassPageModule)
+    loadChildren: () =>
+      import('./pages/rest-pass/rest-pass.module').then(
+        (m) => m.RestPassPageModule
+      ),
+    canActivate: [AuthGuard],
   },
-
+  { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({

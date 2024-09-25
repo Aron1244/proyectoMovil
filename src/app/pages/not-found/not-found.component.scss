@@ -1,0 +1,67 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #f4f4f9;
+}
+
+.container {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh; /* Hace que el contenedor ocupe toda la pantalla */
+  padding: 0 20px; /* Agrega un poco de espacio a los lados para pantallas pequeñas */
+  font-family: system-ui, sans-serif;
+}
+
+h1 {
+  font-size: 4rem; /* Tamaño de fuente adaptable */
+  color: #1d1d1d;
+  margin: 0;
+}
+
+span {
+  font-size: 1.5rem; /* Tamaño de fuente adaptable */
+  color: #1d1d1d;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 3rem;
+  }
+
+  span {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  span {
+    font-size: 1rem;
+  }
+}
+
+button {
+  margin-top: 20px;
+  background-color: #2f4550;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+button a {
+  text-decoration: none;
+  color: #f4f4f9;
+  font-family: system-ui, sans-serif;
+}
