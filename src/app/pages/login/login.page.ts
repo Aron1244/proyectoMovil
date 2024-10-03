@@ -36,7 +36,7 @@ export class LoginPage implements OnInit {
 
     if(this.username === login.username && this.password === login.password){
       this.generateMessage('Login correcto', 'success');
-      this.loginService.registerLoggerUser(login);
+      this.loginService.registerLoggedUser(login);
       let extras: NavigationExtras ={
         state: {user: this.username}
       }
@@ -44,28 +44,7 @@ export class LoginPage implements OnInit {
     } else {
       this.generateMessage('Login fallido', 'danger')
     } 
-
-    /*  Codigo legacy del login
-    
-     if (this.username === 'admin' && this.password === '1234') {
-      let extras: NavigationExtras = {
-        state: { user: this.username },
-      };
-      this.router.navigate(['/home'], extras);
-    } else {
-      this.toastErrorMessage('Usuario y/o Contraseña no válidos');
-    } */
   }
-
-/*   async toastErrorMessage(message: string) {
-    const toast = await this.toaster.create({
-      message: message,
-      duration: 3000,
-      position: 'top',
-      color: 'danger',
-    });
-    toast.present();
-  } */
 
   async generateMessage(message: string, color: string){
     const toast = await this.toaster.create({
