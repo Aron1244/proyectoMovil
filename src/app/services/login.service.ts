@@ -1,37 +1,56 @@
 import { Injectable } from '@angular/core';
-import { Login } from '../models/login'
-import { tick } from '@angular/core/testing';
+import { Login } from '../models/login';
+import { StorageService } from './storage.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoginService {
 
-  loggerUser!: Login;
+  loggedUser!: Login | undefined;
 
   logins: Login[] = [
     {
       username: 'admin',
-      password: '1234'
+      password: '1234',
     },
     {
       username: 'Aron',
-      password: 'Pass'
+      password: 'Pass',
+    },
+  ];
+
+  constructor(
+    private storage: StorageService
+  ) {}
+
+  async init(): Promise<void> {
+    const loggedUser = await this.storage.get('loggedUser');
+    if (loggedUser) {
+      this.loggedUser = loggedUser;
     }
-  ]
-
-  constructor() { }
-
-  findByUsername(u: String): Login| undefined{
-    return this.logins.find(L => L.username === u)
   }
 
-  registerLoggerUser(login: Login){
-    this.loggerUser = login;
+  findByUsername(u: String): Login | undefined {
+    return this.logins.find(l => l.username === u)
   }
 
-  isAuthenticated(): boolean{
-    console.log(this.loggerUser)
-    return this.loggerUser !== undefined
+  registerLoggedUser(login: Login): void {
+    this.loggedUser = login;
+    this.storage.set('loggedUser', login);
+  }
+
+  getLoggedUser(): Login | undefined {
+    return this.loggedUser;
+  }
+
+  logOut(): void {
+    this.loggedUser = undefined;
+    this.storage.remove('loggedUser');
+  }
+
+  isAuthenticated(): boolean {
+    console.log(this.loggedUser)
+    return this.loggedUser !== undefined
   }
 }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { NoAuthGuard } from './guards/no-auth.guard';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () =>
       import('./pages/login/login.module').then((m) => m.LoginPageModule),
+    canActivate: [NoAuthGuard],
   },
   {
     path: 'user-info',
@@ -48,7 +50,7 @@ const routes: Routes = [
       import('./pages/rest-pass/rest-pass.module').then(
         (m) => m.RestPassPageModule
       ),
-    canActivate: [AuthGuard],
+    canActivate: [NoAuthGuard],
   },
   { path: '**', component: NotFoundComponent },
 ];
