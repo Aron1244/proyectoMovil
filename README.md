@@ -9,6 +9,7 @@ Proyecto de programación movil desarrollado en Ionic, el proyecto consiste en u
   - ionic cap sync
   - ionic cap open android
   - Hacer el build en Android Studio
+  - la apk se genero en la ruta : android/app/build/outputs/apk/debug/app-debug.apk
 
 ## desarrolladores
 - AronSn0w       :  https://github.com/Aron1244
