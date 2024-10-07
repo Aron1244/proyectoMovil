@@ -11,8 +11,10 @@ import { ClimateService } from 'src/app/services/climate.service';
 })
 export class HomePage {
   user!: string;
-  developer: String = 'ByteForge';
+  developer: string = 'ByteForge';
   weatherData: any;
+  loading: boolean = false; // Variable para manejar el estado de carga
+  error: string | null = null; // Variable para manejar el error
 
   constructor(
     private activeroute: ActivatedRoute,
@@ -65,15 +67,25 @@ export class HomePage {
   }
 
   getWeather() {
-    this.climateService.getWeather().subscribe(
-      (data) => {
+    this.loading = true; // Indica que se está cargando
+    this.error = null; // Reinicia el error al comenzar la carga
+
+    this.climateService.getWeather().subscribe({
+      next: (data) => {
         this.weatherData = data;
         console.log(this.weatherData); // Puedes ver los datos en la consola
+        this.loading = false; // Fin de la carga
       },
-      (error) => {
+      error: (error) => {
         console.error('Error al obtener el clima', error);
-      }
-    );
+        this.error =
+          'No se pudo obtener la información del clima. Intenta nuevamente más tarde.'; // Mensaje de error
+        this.loading = false; // Fin de la carga
+      },
+      complete: () => {
+        console.log('La solicitud de clima se completó.'); // Acción cuando se completa
+      },
+    });
   }
 
   getWeatherIcon(condition: string): string {
