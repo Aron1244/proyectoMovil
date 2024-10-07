@@ -25,7 +25,9 @@
       <span class="txtMenu"> Log Out </span>
     </ion-button>
 
-    <div class="clima" *ngIf="weatherData">
+    <div *ngIf="loading">Cargando...</div>
+    <div *ngIf="error">{{ error }}</div>
+    <div class="clima" *ngIf="weatherData && !loading">
       <h2>Clima en Santiago</h2>
       <p>
         Temperatura: {{ weatherData.current_condition[0].temp_C }} °C
@@ -33,7 +35,6 @@
           [name]="getWeatherIcon(weatherData.current_condition[0].weatherDesc[0].value)"
         ></ion-icon>
       </p>
-
     </div>
   </ion-content>
 </ion-menu>
