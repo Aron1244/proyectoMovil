@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ClimateService {
-  private baseUrl = 'https://wttr.in/Santiago?format=j1'; // Endpoint por defecto
+  private baseUrl = 'https://wttr.in/Santiago,Chile?format=j1'; // Endpoint por defecto
 
   constructor(private http: HttpClient) {}
 
