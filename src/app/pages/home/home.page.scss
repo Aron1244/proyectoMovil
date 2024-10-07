@@ -90,3 +90,16 @@ ion-menu {
 ion-menu-button {
   color: #f4f4f9; /* Asegúrate de que el color del ícono sea visible */
 }
+
+.clima{
+  display: block;
+  justify-content: space-between;
+  align-items: center;
+
+  font-family: system-ui, sans-serif;
+  color: #1d1d1d;
+}
+
+.clima p{
+  font-size: 5vw;
+}
