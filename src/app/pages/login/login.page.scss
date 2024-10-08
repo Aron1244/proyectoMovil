@@ -20,11 +20,13 @@ ion-content {
 }
 
 ion-list {
-  background-color: #F4F4F9;
+  background-color: #2f4550;
+  border-radius: 12px;
 }
 
 ion-item {
-  --background: #F4F4F9;
+  --background: #2f4550;
+  border-radius: 12px;
 }
 
 ion-input {
@@ -47,4 +49,22 @@ ion-button {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+
+  /*nuevo*/
+  z-index: 1;
+  padding: 20px;
 }
+
+.fondo_login{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+
+
+}
+
+

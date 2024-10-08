@@ -12,6 +12,9 @@ html, body {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+
+  z-index: 1;
+  padding: 20px;
 }
 
 ion-header {
@@ -89,6 +92,19 @@ ion-menu {
 
 ion-menu-button {
   color: #f4f4f9; /* Asegúrate de que el color del ícono sea visible */
+}
+
+
+.fondo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+
+
 }
 
 .clima{

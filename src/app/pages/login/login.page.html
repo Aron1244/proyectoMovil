@@ -11,6 +11,12 @@
     </ion-toolbar>
   </ion-header> -->
 
+  <ion-img  class="fondo_login"
+    src="../../../assets/imagenes/img_login.avif" alt="libros portada">
+
+  </ion-img>
+
+
   <div id="container">
     <ion-list>
       <ion-item lines="none">
@@ -30,8 +36,8 @@
       <br/>
       <a [routerLink]="['/rest-pass']">Restablecer contraseña</a>
       <br>
-      
-      
+
+
       <ion-button (click)="validateLogin()">Ingresar</ion-button>
     </ion-list>
   </div>
