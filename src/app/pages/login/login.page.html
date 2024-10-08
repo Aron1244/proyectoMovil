@@ -11,44 +11,71 @@
     </ion-toolbar>
   </ion-header> -->
 
-  <ion-img  class="fondo_login"
-    src="../../../assets/imagenes/img_login.avif" alt="libros portada">
-
+  <ion-img
+    class="fondo_login"
+    src="../../../assets/imagenes/img_login.avif"
+    alt="libros portada"
+  >
   </ion-img>
-
 
   <div id="container">
     <ion-list>
       <ion-item lines="none">
-        <ion-input [(ngModel)]="username" position="floating" placeholder=""
-          >Usuario</ion-input
-        >
+        <img
+          src="../../../assets/imagenes/icon.png"
+          alt="Icono AsistApp"
+          width="50vw"
+          class="icon"
+        />
+        <h1>Iniciar Sesión</h1>
       </ion-item>
       <ion-item lines="none">
         <ion-input
+          [(ngModel)]="username"
+          label="Usuario"
+          labelPlacement="floating"
+          position="floating"
+          placeholder="Ingrese su usuario"
+          class="center-label"
+        ></ion-input>
+      </ion-item>
+      <br />
+      <ion-item lines="none" class="input-item">
+        <ion-input
           [(ngModel)]="password"
           position="floating"
-          type="password"
-          value="password"
-          >Contraseña</ion-input
+          [type]="isPasswordVisible ? 'text' : 'password'"
+          label="Contraseña"
+          labelPlacement="floating"
+          placeholder="Ingrese su contraseña"
+          class="center-label"
+        ></ion-input>
+        <ion-button
+          fill="clear"
+          (click)="togglePasswordVisibility()"
+          class="visibility-button"
         >
+          <ion-icon
+            slot="icon-only"
+            [name]="isPasswordVisible ? 'eye-off' : 'eye'"
+          ></ion-icon>
+        </ion-button>
       </ion-item>
 
-
-
+      <br />
       <ion-button (click)="validateLogin()">Ingresar</ion-button>
-
-      <br/>
+      <br />
       <a [routerLink]="['/rest-pass']">Restablecer contraseña</a>
-      <br>
+      <br />
+      <br />
     </ion-list>
-
-
   </div>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-title class="titleFooter">App desarrollada por {{developer}}</ion-title>
+    <ion-title class="titleFooter"
+      >App desarrollada por {{developer}}</ion-title
+    >
   </ion-toolbar>
 </ion-footer>

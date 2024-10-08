@@ -15,29 +15,29 @@ ion-title {
 }
 
 ion-content {
-  --background: #F4F4F9;
+  --background: #f4f4f9;
   font-family: system-ui, sans-serif;
 }
 
 ion-list {
-  background-color: #2f4550;
+  background-color: #f4f4f9;
   border-radius: 12px;
 }
 
 ion-item {
-  --background: #2f4550;
+  --background: #f4f4f9;
   border-radius: 12px;
 }
 
 ion-input {
-  color: #2F4550;
-  background-color: #F4F4F9;
+  color: #2f4550;
+  background-color: #f4f4f9;
   text-align: center;
 }
 
 ion-button {
-  --background: #2F4550;
-  color: #F4F4F9;
+  --background: #2f4550;
+  color: #f4f4f9;
   font-family: system-ui, sans-serif;
 }
 
@@ -55,7 +55,7 @@ ion-button {
   padding: 20px;
 }
 
-.fondo_login{
+.fondo_login {
   position: absolute;
   top: 0;
   left: 0;
@@ -63,8 +63,40 @@ ion-button {
   height: 100%;
   object-fit: cover;
   z-index: -1;
-
-
+  opacity: 0.4;
 }
 
+.center-label {
+  --padding-start: 0; /* Quitar padding lateral */
+  text-align: center; /* Centrar el texto del input */
+}
 
+.center-label::part(label) {
+  text-align: center; /* Centra el texto del label flotante */
+  display: flex; /* Usar flexbox para centrar el texto */
+  justify-content: center; /* Centrar horizontalmente */
+  width: 100%; /* Asegura que el label ocupe el ancho completo */
+}
+
+.center-label::part(input) {
+  text-align: center; /* Centra el texto dentro del input */
+}
+
+h1 {
+  color: #2f4550;
+  font-family: system-ui, sans-serif;
+}
+
+.icon {
+  border-radius: 20%;
+  margin-right: 12px;
+}
+
+ion-item h1 {
+  margin: 0; /* Eliminar márgenes predeterminados del h1 */
+  display: inline; /* Asegura que el h1 esté en línea con la imagen */
+}
+
+.visibility-button {
+  margin-top: auto;
+}

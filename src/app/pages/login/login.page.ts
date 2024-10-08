@@ -13,6 +13,7 @@ export class LoginPage implements OnInit {
   password!: String;
   developer: String = 'ByteForge';
   message: String;
+  isPasswordVisible: boolean = false;
 
   constructor(
     private router: Router,
@@ -34,25 +35,29 @@ export class LoginPage implements OnInit {
       return;
     }
 
-    if(this.username === login.username && this.password === login.password){
+    if (this.username === login.username && this.password === login.password) {
       this.generateMessage('Login correcto', 'success');
       this.loginService.registerLoggedUser(login);
-      let extras: NavigationExtras ={
-        state: {user: this.username}
-      }
-      this.router.navigate(['/home'],extras);
+      let extras: NavigationExtras = {
+        state: { user: this.username },
+      };
+      this.router.navigate(['/home'], extras);
     } else {
-      this.generateMessage('Login fallido', 'danger')
-    } 
+      this.generateMessage('Login fallido', 'danger');
+    }
   }
 
-  async generateMessage(message: string, color: string){
+  async generateMessage(message: string, color: string) {
     const toast = await this.toaster.create({
       message: message,
       duration: 500,
       position: 'top',
-      color: color
+      color: color,
     });
     await toast.present();
+  }
+
+  togglePasswordVisibility() {
+    this.isPasswordVisible = !this.isPasswordVisible;
   }
 }
