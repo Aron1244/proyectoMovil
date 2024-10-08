@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -94,7 +95,6 @@ ion-menu-button {
   color: #f4f4f9; /* Asegúrate de que el color del ícono sea visible */
 }
 
-
 .fondo {
   position: absolute;
   top: 0;
@@ -104,10 +104,10 @@ ion-menu-button {
   object-fit: cover;
   z-index: -1;
 
-
+  opacity: 0.4;
 }
 
-.clima{
+.clima {
   display: block;
   justify-content: space-between;
   align-items: center;
@@ -116,6 +116,6 @@ ion-menu-button {
   color: #1d1d1d;
 }
 
-.clima p{
+.clima p {
   font-size: 5vw;
 }
