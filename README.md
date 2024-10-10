@@ -23,10 +23,8 @@ Proyecto de programación movil desarrollado en Ionic, el proyecto consiste en u
 
 4. Haz el build en Android Studio.
 
-5. La APK se generará en la siguiente ruta:
-    ```bash
-    android/app/build/outputs/apk/debug/app-debug.apk
-    ```
+5. La APK se generará en la siguiente ruta: android/app/build/outputs/apk/debug/app-debug.apk
+
 
 ## desarrolladores
 - AronSn0w       :  https://github.com/Aron1244
