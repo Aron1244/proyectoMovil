@@ -4,12 +4,29 @@ Proyecto de programación movil desarrollado en Ionic, el proyecto consiste en u
 ## Comandos al iniciar proyecto en desarrollo
 - npm install
 
-  ## Instrucciones para hacer el build en Capacitator
-  - ionic build --prod
-  - ionic cap sync
-  - ionic cap open android
-  - Hacer el build en Android Studio
-  - la apk se genero en la ruta : android/app/build/outputs/apk/debug/app-debug.apk
+## Instrucciones para hacer el build en Capacitor
+
+1. Ejecuta el siguiente comando para hacer el build:
+    ```bash
+    ionic build --prod
+    ```
+
+2. Sincroniza Capacitor:
+    ```bash
+    ionic cap sync
+    ```
+
+3. Abre el proyecto en Android Studio:
+    ```bash
+    ionic cap open android
+    ```
+
+4. Haz el build en Android Studio.
+
+5. La APK se generará en la siguiente ruta:
+    ```bash
+    android/app/build/outputs/apk/debug/app-debug.apk
+    ```
 
 ## desarrolladores
 - AronSn0w       :  https://github.com/Aron1244
