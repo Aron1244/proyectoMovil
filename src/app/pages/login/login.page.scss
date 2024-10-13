@@ -98,5 +98,17 @@ ion-item h1 {
 }
 
 .visibility-button {
+  --border-radius: 50%;
+  width: 25px;
+  height: 10px;
   margin-top: auto;
+}
+
+ion-icon{
+  color: #f4f4f9;
+  padding: auto;
+}
+
+.tittleLogin{
+  margin-top: 5vh;
 }
