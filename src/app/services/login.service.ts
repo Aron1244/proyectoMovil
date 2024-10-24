@@ -1,27 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Login } from '../models/login';
+import { Firestore, collection, query, where, getDocs } from '@angular/fire/firestore';
+import { Login } from '../models/login'; // Asegúrate de que Login tenga los campos adecuados
 import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-
   loggedUser!: Login | undefined;
 
-  logins: Login[] = [
-    {
-      username: 'admin',
-      password: '1234',
-    },
-    {
-      username: 'Aron',
-      password: 'Pass',
-    },
-  ];
-
   constructor(
-    private storage: StorageService
+    private storage: StorageService,
+    private firestore: Firestore
   ) {}
 
   async init(): Promise<void> {
@@ -31,8 +21,36 @@ export class LoginService {
     }
   }
 
-  findByUsername(u: String): Login | undefined {
-    return this.logins.find(l => l.username === u)
+  async findByUsername(username: string): Promise<Login | undefined> {
+    const userRef = collection(this.firestore, 'users');
+    const q = query(userRef, where('username', '==', username));
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) {
+      return undefined;
+    }
+    const userData = snapshot.docs[0].data();
+    return { 
+      username: userData['username'], 
+      password: userData['password'], 
+      email: userData['email'], 
+      name: userData['name'], 
+      birth_date: userData['birth_date'], 
+      career: userData['career'], 
+      genre: userData['genre'], 
+      occupation: userData['occupation'], 
+      phone: userData['phone'],
+      student_id: userData['student_id'],
+      // Add any other missing fields here
+    }; // Asegúrate de que estos campos existan
+  }
+
+  async login(username: string, password: string): Promise<boolean> {
+    const user = await this.findByUsername(username);
+    if (user && user.password === password) {
+      this.registerLoggedUser(user);
+      return true;
+    }
+    return false;
   }
 
   registerLoggedUser(login: Login): void {
@@ -50,7 +68,8 @@ export class LoginService {
   }
 
   isAuthenticated(): boolean {
-    console.log(this.loggedUser)
-    return this.loggedUser !== undefined
+    return this.loggedUser !== undefined;
   }
 }
+export { Login };
+

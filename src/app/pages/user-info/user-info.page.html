@@ -13,6 +13,7 @@
 
   <div class="container">
     <h2>Usuario: {{user}}</h2>
+    <h3>Nombre: {{name}}</h3>
     <div class="regreso">
       <ion-back-button class="btnRegreso" icon="arrow-back-outline" defaultHref="/home"></ion-back-button>
     </div>
@@ -21,12 +22,12 @@
     <ion-list>
       <ion-item lines="none">
         <label>Direccion de correo: </label>
-        <p class="right-text">admin&#64;duocuc.com</p>
+        <p class="right-text"> {{email}} </p>
       </ion-item>
 
       <ion-item lines="none">
         <label>Id Estudiante: </label>
-        <p class="right-text">207688648</p>
+        <p class="right-text">{{student_id}}</p>
       </ion-item>
     </ion-list>
 
@@ -34,27 +35,27 @@
     <ion-list>
       <ion-item lines="none">
         <label>Fecha de nacimiento:</label>
-        <p class="right-text">02 de marzo del 2000</p>
+        <p class="right-text">{{ birth_date | date: 'dd/MM/yyyy' }}</p>
       </ion-item>
 
       <ion-item lines="none">
         <label>Sexo:</label>
-        <p class="right-text">Masculino</p>
+        <p class="right-text">{{genre}}</p>
       </ion-item>
 
       <ion-item lines="none">
         <label>Ocupación:</label>
-        <p class="right-text">Estudiante</p>
+        <p class="right-text">{{occupation}}</p>
       </ion-item>
 
       <ion-item lines="none">
         <label>Teléfono:</label>
-        <p class="right-text">+56 9 5896 6368</p>
+        <p class="right-text">{{phone}}</p>
       </ion-item>
 
       <ion-item lines="none">
         <label>Carrera:</label>
-        <p class="right-text">Ingenieria</p>
+        <p class="right-text">{{career}}</p>
       </ion-item>
     </ion-list>
   </div>

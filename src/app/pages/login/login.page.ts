@@ -9,10 +9,10 @@ import { LoginService } from './../../services/login.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  username!: String;
-  password!: String;
-  developer: String = 'ByteForge';
-  message: String;
+  username!: string;
+  password!: string;
+  developer: string = 'ByteForge';
+  message: string;
   isPasswordVisible: boolean = false;
 
   constructor(
@@ -25,10 +25,10 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {}
 
-  validateLogin() {
+  async validateLogin() {
     console.log('Validando usuario');
 
-    const login = this.loginService.findByUsername(this.username);
+    const login = await this.loginService.findByUsername(this.username);
 
     if (login === undefined) {
       this.generateMessage('Usuario no existe', 'danger');
