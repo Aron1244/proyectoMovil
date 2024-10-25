@@ -4,6 +4,9 @@ import { ToastController } from '@ionic/angular';
 import { LoginService } from 'src/app/services/login.service';
 import { ClimateService } from 'src/app/services/climate.service';
 
+import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint, CapacitorBarcodeScannerTypeHintALLOption } from '@capacitor/barcode-scanner';
+
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -15,6 +18,8 @@ export class HomePage {
   weatherData: any;
   loading: boolean = false; // Variable para manejar el estado de carga
   error: string | null = null; // Variable para manejar el error
+
+  result: string = ''
 
   constructor(
     private activeroute: ActivatedRoute,
@@ -54,16 +59,11 @@ export class HomePage {
     });
   }
 
-  async leerQr() {
-    const toast = await this.toaster.create({
-      message: 'Leer código QR',
-      duration: 2000,
-      position: 'middle',
-      color: 'primary',
-      icon: 'qr-code-outline',
+  async leerQr(): Promise<void> {
+    const result = await CapacitorBarcodeScanner.scanBarcode({
+      hint: CapacitorBarcodeScannerTypeHint.ALL
     });
-
-    toast.present();
+    this.result = result.ScanResult;
   }
 
   getWeather() {
