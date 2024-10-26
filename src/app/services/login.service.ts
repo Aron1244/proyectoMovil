@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, query, where, getDocs } from '@angular/fire/firestore';
-import { Login } from '../models/login'; // Asegúrate de que Login tenga los campos adecuados
+import {
+  Firestore,
+  collection,
+  query,
+  where,
+  getDocs,
+} from '@angular/fire/firestore';
+import { Login } from '../models/login';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -9,10 +15,9 @@ import { StorageService } from './storage.service';
 export class LoginService {
   loggedUser!: Login | undefined;
 
-  constructor(
-    private storage: StorageService,
-    private firestore: Firestore
-  ) {}
+  constructor(private storage: StorageService, private firestore: Firestore) {
+    this.init(); // Inicializa el usuario logueado
+  }
 
   async init(): Promise<void> {
     const loggedUser = await this.storage.get('loggedUser');
@@ -29,26 +34,29 @@ export class LoginService {
       return undefined;
     }
     const userData = snapshot.docs[0].data();
-    return { 
-      username: userData['username'], 
-      password: userData['password'], 
-      email: userData['email'], 
-      name: userData['name'], 
-      birth_date: userData['birth_date'], 
-      career: userData['career'], 
-      genre: userData['genre'], 
-      occupation: userData['occupation'], 
+    return {
+      username: userData['username'],
+      password: userData['password'],
+      email: userData['email'],
+      name: userData['name'],
+      birth_date: userData['birth_date'],
+      career: userData['career'],
+      genre: userData['genre'],
+      occupation: userData['occupation'],
       phone: userData['phone'],
       student_id: userData['student_id'],
-      // Add any other missing fields here
-    }; // Asegúrate de que estos campos existan
+    };
   }
 
   async login(username: string, password: string): Promise<boolean> {
-    const user = await this.findByUsername(username);
-    if (user && user.password === password) {
-      this.registerLoggedUser(user);
-      return true;
+    try {
+      const user = await this.findByUsername(username);
+      if (user && user.password === password) {
+        this.registerLoggedUser(user);
+        return true;
+      }
+    } catch (error) {
+      console.error('Error during login', error);
     }
     return false;
   }
@@ -71,5 +79,5 @@ export class LoginService {
     return this.loggedUser !== undefined;
   }
 }
-export { Login };
 
+export { Login };
