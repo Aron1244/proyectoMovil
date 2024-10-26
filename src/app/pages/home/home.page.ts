@@ -4,6 +4,12 @@ import { ToastController } from '@ionic/angular';
 import { LoginService } from 'src/app/services/login.service';
 import { ClimateService } from 'src/app/services/climate.service';
 
+import {
+  CapacitorBarcodeScanner,
+  CapacitorBarcodeScannerTypeHint,
+  CapacitorBarcodeScannerTypeHintALLOption,
+} from '@capacitor/barcode-scanner';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -16,6 +22,7 @@ export class HomePage implements OnInit {
   loading: boolean = false; // Variable para manejar el estado de carga
   error: string | null = null; // Variable para manejar el error
 
+  result: string = '';
   constructor(
     private activeroute: ActivatedRoute,
     private router: Router,
@@ -87,18 +94,6 @@ export class HomePage implements OnInit {
     });
   }
 
-  async leerQr() {
-    const toast = await this.toaster.create({
-      message: 'Leer código QR',
-      duration: 2000,
-      position: 'middle',
-      color: 'primary',
-      icon: 'qr-code-outline',
-    });
-
-    toast.present();
-  }
-
   getWeather() {
     this.loading = true; // Indica que se está cargando
     this.error = null; // Reinicia el error al comenzar la carga
@@ -138,5 +133,13 @@ export class HomePage implements OnInit {
     } else {
       return 'partly-sunny-outline'; // Clima mixto o desconocido
     }
+  }
+
+  async leerQr(): Promise<void> {
+    const result = await CapacitorBarcodeScanner.scanBarcode({
+      hint: CapacitorBarcodeScannerTypeHint.ALL,
+    });
+
+    this.result = result.ScanResult;
   }
 }
