@@ -38,3 +38,6 @@ Proyecto de programación movil desarrollado en Ionic, el proyecto consiste en u
   <img src="https://www.returngis.net/wp-content/uploads/2023/04/ionic.png" alt="Logo Ionic" width="100" style="object-fit: contain;">  
   <img src="https://miro.medium.com/v2/resize:fit:512/1*JLtAxMK7mqyvpQZ4ikH-Iw.png" alt="Logo Capacitator" width="100" style="object-fit: contain;">    
 </p>
+
+[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=Aron1244)](https://github.com/anuraghazra/github-readme-stats)
+[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=mauricio89777)](https://github.com/anuraghazra/github-readme-stats)
