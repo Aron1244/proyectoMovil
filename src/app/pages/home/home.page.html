@@ -10,12 +10,12 @@
       <span class="txtMenu">Informacion Personal </span>
     </ion-button>
     <br />
-    <ion-button class="btnMenu" expand="block" [routerLink]="['/clases']">
+    <ion-button class="btnMenu" expand="block" (click)="goToClases()">
       <ion-icon slot="start" name="bookmark-outline"></ion-icon>
       <span class="txtMenu">Clases Programadas</span></ion-button
     >
     <br />
-    <ion-button class="btnMenu" expand="block" [routerLink]="['/historial']">
+    <ion-button class="btnMenu" expand="block" (click)="goToHistorial()">
       <ion-icon slot="start" name="calendar-outline"> </ion-icon>
       <span class="txtMenu"> Historial de asistencia </span>
     </ion-button>

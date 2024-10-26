@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { LoginService } from 'src/app/services/login.service';
@@ -9,7 +9,7 @@ import { ClimateService } from 'src/app/services/climate.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
   user!: string;
   developer: string = 'ByteForge';
   weatherData: any;
@@ -23,16 +23,37 @@ export class HomePage {
     private loginService: LoginService,
     private climateService: ClimateService
   ) {
-    this.activeroute.queryParams.subscribe((params) => {
+    this.activeroute.queryParams.subscribe(async (params) => {
       let state = this.router.getCurrentNavigation()?.extras.state;
       if (state && state['user']) {
         this.user = state['user']; // Almacena el valor en la propiedad
+        await this.loginService.registerLoggedUser({
+          username: this.user,
+          password: '',
+          email: '',
+          name: '',
+          birth_date: '',
+          career: '',
+          genre: '',
+          occupation: '',
+          phone: '',
+          student_id: 0
+        }); // Almacena el usuario en el servicio de almacenamiento
       }
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.getWeather();
+    const loggedUser = this.loginService.getLoggedUser();
+    if (loggedUser) {
+      this.user = loggedUser.username;
+    } else {
+      const storedUser = await this.loginService.getLoggedUser();
+      if (storedUser) {
+        this.user = storedUser.username; // Recupera el usuario del servicio de almacenamiento
+      }
+    }
   }
 
   async logOut() {
@@ -50,6 +71,18 @@ export class HomePage {
 
   goToUserInfo() {
     this.router.navigate(['/user-info'], {
+      state: { user: this.user },
+    });
+  }
+
+  goToHistorial() {
+    this.router.navigate(['/historial'], {
+      state: { user: this.user },
+    });
+  }
+
+  goToClases() {
+    this.router.navigate(['/clases'], {
       state: { user: this.user },
     });
   }
