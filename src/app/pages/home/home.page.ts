@@ -25,7 +25,7 @@ export class HomePage implements OnInit {
 
   private targetLatitude = -33.449465722108094;
   private targetLongitude = -70.69464624425146;
-  private distanceThreshold = 50;
+  private distanceThreshold = 300;
 
   result: string = '';
   constructor(
