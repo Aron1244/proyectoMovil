@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { LoginService } from 'src/app/services/login.service';
 import { ClimateService } from 'src/app/services/climate.service';
+import { Geolocation } from '@capacitor/geolocation';
 
 import {
   CapacitorBarcodeScanner,
@@ -21,6 +22,10 @@ export class HomePage implements OnInit {
   weatherData: any;
   loading: boolean = false; // Variable para manejar el estado de carga
   error: string | null = null; // Variable para manejar el error
+
+  private targetLatitude = -33.449465722108094;
+  private targetLongitude = -70.69464624425146;
+  private distanceThreshold = 50;
 
   result: string = '';
   constructor(
@@ -44,7 +49,7 @@ export class HomePage implements OnInit {
           genre: '',
           occupation: '',
           phone: '',
-          student_id: 0
+          student_id: 0,
         }); // Almacena el usuario en el servicio de almacenamiento
       }
     });
@@ -136,10 +141,72 @@ export class HomePage implements OnInit {
   }
 
   async leerQr(): Promise<void> {
-    const result = await CapacitorBarcodeScanner.scanBarcode({
-      hint: CapacitorBarcodeScannerTypeHint.ALL,
-    });
+    try {
+      // Solicita la ubicación actual
+      const coordinates = await Geolocation.getCurrentPosition();
+      const currentLatitude = coordinates.coords.latitude;
+      const currentLongitude = coordinates.coords.longitude;
 
-    this.result = result.ScanResult;
+      // Calcula la distancia entre la ubicación actual y la ubicación objetivo
+      const distance = this.calculateDistance(
+        currentLatitude,
+        currentLongitude,
+        this.targetLatitude,
+        this.targetLongitude
+      );
+
+      if (distance <= this.distanceThreshold) {
+        // Si la distancia es válida, permite la lectura del QR
+        const result = await CapacitorBarcodeScanner.scanBarcode({
+          hint: CapacitorBarcodeScannerTypeHint.ALL,
+        });
+        this.result = result.ScanResult;
+      } else {
+        // Si la distancia no es válida, muestra un mensaje de error
+        const toast = await this.toaster.create({
+          message:
+            'Estás demasiado lejos de la ubicación requerida para escanear el código QR.',
+          duration: 3000,
+          position: 'top',
+          color: 'danger',
+        });
+        toast.present();
+      }
+    } catch (error) {
+      console.error('Error obteniendo la ubicación', error);
+      const toast = await this.toaster.create({
+        message:
+          'No se pudo obtener la ubicación. Asegúrate de que los permisos de ubicación están activados.',
+        duration: 3000,
+        position: 'top',
+        color: 'danger',
+      });
+      toast.present();
+    }
+  }
+
+  // Función para calcular la distancia en metros entre dos puntos de latitud/longitud
+  calculateDistance(
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number
+  ): number {
+    const earthRadius = 6371; // Radio de la tierra en kilómetros
+    const dLat = this.deg2rad(lat2 - lat1);
+    const dLon = this.deg2rad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2rad(lat1)) *
+        Math.cos(this.deg2rad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = earthRadius * c * 1000; // Convertir a metros
+    return distance;
+  }
+
+  deg2rad(deg: number): number {
+    return deg * (Math.PI / 180);
   }
 }
