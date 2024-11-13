@@ -26,11 +26,11 @@ Proyecto de programación movil desarrollado en Ionic, el proyecto consiste en u
 5. La APK se generará en la siguiente ruta: android/app/build/outputs/apk/debug/app-debug.apk
 
 
-## desarrolladores
+## Desarrolladores
 - AronSn0w       :  https://github.com/Aron1244
 - Mauricio89777  :  https://github.com/mauricio89777
 
-## tecnologías
+## Tecnologías
 
 <p align="left">
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" alt="Logo TypeScript" width="100" style="object-fit: contain;">
@@ -39,5 +39,6 @@ Proyecto de programación movil desarrollado en Ionic, el proyecto consiste en u
   <img src="https://miro.medium.com/v2/resize:fit:512/1*JLtAxMK7mqyvpQZ4ikH-Iw.png" alt="Logo Capacitator" width="100" style="object-fit: contain;">    
 </p>
 
-[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=Aron1244)](https://github.com/anuraghazra/github-readme-stats)
-[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=mauricio89777)](https://github.com/anuraghazra/github-readme-stats)
+## Pluggins utilizados
+- @capacitor/barcode-scanner
+- @capacitor/geolocation
