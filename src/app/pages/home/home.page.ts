@@ -25,7 +25,7 @@ export class HomePage implements OnInit {
 
   private targetLatitude = -33.449465722108094;
   private targetLongitude = -70.69464624425146;
-  private distanceThreshold = 300;
+  private distanceThreshold = 500;
 
   result: string = '';
   constructor(
@@ -142,11 +142,14 @@ export class HomePage implements OnInit {
 
   async leerQr(): Promise<void> {
     try {
-      // Solicita la ubicación actual
+      // Solicita la ubicación actual y espera a que se resuelva
       const coordinates = await Geolocation.getCurrentPosition();
       const currentLatitude = coordinates.coords.latitude;
       const currentLongitude = coordinates.coords.longitude;
-
+  
+      // Imprimir las coordenadas obtenidas para verificar
+      console.log('Coordenadas obtenidas: ', currentLatitude, currentLongitude);
+  
       // Calcula la distancia entre la ubicación actual y la ubicación objetivo
       const distance = this.calculateDistance(
         currentLatitude,
@@ -154,7 +157,9 @@ export class HomePage implements OnInit {
         this.targetLatitude,
         this.targetLongitude
       );
-
+  
+      console.log('Distancia calculada:', distance); // Verifica la distancia
+  
       if (distance <= this.distanceThreshold) {
         // Si la distancia es válida, permite la lectura del QR
         const result = await CapacitorBarcodeScanner.scanBarcode({
@@ -183,7 +188,7 @@ export class HomePage implements OnInit {
       });
       toast.present();
     }
-  }
+  }  
 
   // Función para calcular la distancia en metros entre dos puntos de latitud/longitud
   calculateDistance(
@@ -203,8 +208,9 @@ export class HomePage implements OnInit {
         Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = earthRadius * c * 1000; // Convertir a metros
+    console.log('Distancia calculada:', distance);
     return distance;
-  }
+  }  
 
   deg2rad(deg: number): number {
     return deg * (Math.PI / 180);
