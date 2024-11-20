@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import {
-  Firestore,
+  doc,
+  setDoc,
+  updateDoc,
+  addDoc,
   collection,
+  getDocs,
   query,
   where,
-  getDocs,
+  Firestore,
   QuerySnapshot,
 } from '@angular/fire/firestore';
 import { Login } from '../models/login';
@@ -53,5 +57,31 @@ export class FirestoreService {
       console.error('Error al obtener el documento:', error);
       return null;
     }
+  }
+
+  async getAsistencia(username: string, asignatura: string, fecha: string): Promise<any | null> {
+    const asistenciaRef = collection(this.firestore, 'asistencias');
+    const q = query(
+      asistenciaRef,
+      where('username', '==', username),
+      where('asignatura', '==', asignatura),
+      where('fecha', '==', fecha)
+    );
+    const snapshot = await getDocs(q);
+    if (!snapshot.empty) {
+      const doc = snapshot.docs[0];
+      return { id: doc.id, ...doc.data() };
+    }
+    return null;
+  }
+
+  async actualizarAsistencia(id: string, data: any): Promise<void> {
+    const asistenciaDoc = doc(this.firestore, `asistencias/${id}`);
+    await updateDoc(asistenciaDoc, data);
+  }
+
+  async crearAsistencia(data: any): Promise<void> {
+    const asistenciaRef = collection(this.firestore, 'asistencias');
+    await addDoc(asistenciaRef, data);
   }
 }
