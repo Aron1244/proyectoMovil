@@ -4,6 +4,8 @@ import { ToastController } from '@ionic/angular';
 import { LoginService } from 'src/app/services/login.service';
 import { ClimateService } from 'src/app/services/climate.service';
 import { Geolocation } from '@capacitor/geolocation';
+import { HttpClient } from '@angular/common/http';
+import { FirestoreService } from 'src/app/services/firestore.service';
 
 import {
   CapacitorBarcodeScanner,
@@ -23,9 +25,10 @@ export class HomePage implements OnInit {
   loading: boolean = false; // Variable para manejar el estado de carga
   error: string | null = null; // Variable para manejar el error
 
-  private targetLatitude = -33.449465722108094;
-  private targetLongitude = -70.69464624425146;
-  private distanceThreshold = 300;
+  // Coordenadas de la ubicación objetivo
+  private targetLatitude = -33.44966139614493;
+  private targetLongitude = -70.6945602164515;
+  private distanceThreshold = 2000;
 
   result: string = '';
   constructor(
@@ -33,7 +36,9 @@ export class HomePage implements OnInit {
     private router: Router,
     private toaster: ToastController,
     private loginService: LoginService,
-    private climateService: ClimateService
+    private climateService: ClimateService,
+    private http: HttpClient,
+    private firestoreService: FirestoreService
   ) {
     this.activeroute.queryParams.subscribe(async (params) => {
       let state = this.router.getCurrentNavigation()?.extras.state;
@@ -142,30 +147,34 @@ export class HomePage implements OnInit {
 
   async leerQr(): Promise<void> {
     try {
-      // Solicita la ubicación actual
       const coordinates = await Geolocation.getCurrentPosition();
       const currentLatitude = coordinates.coords.latitude;
       const currentLongitude = coordinates.coords.longitude;
-
-      // Calcula la distancia entre la ubicación actual y la ubicación objetivo
+  
+      console.log('Coordenadas obtenidas: ', currentLatitude, currentLongitude);
+  
       const distance = this.calculateDistance(
         currentLatitude,
         currentLongitude,
         this.targetLatitude,
         this.targetLongitude
       );
-
+  
+      console.log('Distancia calculada:', distance);
+  
       if (distance <= this.distanceThreshold) {
-        // Si la distancia es válida, permite la lectura del QR
         const result = await CapacitorBarcodeScanner.scanBarcode({
           hint: CapacitorBarcodeScannerTypeHint.ALL,
         });
         this.result = result.ScanResult;
+  
+        const [asignatura, seccion, sala, fecha] = this.result.split('|');
+        console.log('Datos del QR:', { asignatura, seccion, sala, fecha });
+  
+        await this.verificarYRegistrarAsistencia(asignatura, fecha);
       } else {
-        // Si la distancia no es válida, muestra un mensaje de error
         const toast = await this.toaster.create({
-          message:
-            'Estás demasiado lejos de la ubicación requerida para escanear el código QR.',
+          message: `Estás demasiado lejos para escanear el código QR. Distancia: ${distance.toFixed(2)} m.`,
           duration: 3000,
           position: 'top',
           color: 'danger',
@@ -173,10 +182,9 @@ export class HomePage implements OnInit {
         toast.present();
       }
     } catch (error) {
-      console.error('Error obteniendo la ubicación', error);
+      console.error('Error obteniendo la ubicación o procesando el QR', error);
       const toast = await this.toaster.create({
-        message:
-          'No se pudo obtener la ubicación. Asegúrate de que los permisos de ubicación están activados.',
+        message: 'Ocurrió un error al procesar tu asistencia.',
         duration: 3000,
         position: 'top',
         color: 'danger',
@@ -184,6 +192,7 @@ export class HomePage implements OnInit {
       toast.present();
     }
   }
+  
 
   // Función para calcular la distancia en metros entre dos puntos de latitud/longitud
   calculateDistance(
@@ -203,10 +212,62 @@ export class HomePage implements OnInit {
         Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = earthRadius * c * 1000; // Convertir a metros
+    console.log('Distancia calculada:', distance);
     return distance;
-  }
+  }  
 
   deg2rad(deg: number): number {
     return deg * (Math.PI / 180);
+  }  
+
+  async verificarYRegistrarAsistencia(asignatura: string, fecha: string): Promise<void> {
+    try {
+      const asistencia = await this.firestoreService.getAsistencia(this.user, asignatura, fecha);
+  
+      if (asistencia) {
+        if (asistencia.presente) {
+          const toast = await this.toaster.create({
+            message: 'Ya estás registrado como presente.',
+            duration: 3000,
+            position: 'top',
+            color: 'warning',
+          });
+          toast.present();
+        } else {
+          await this.firestoreService.actualizarAsistencia(asistencia.id, { presente: true });
+          const toast = await this.toaster.create({
+            message: 'Asistencia registrada exitosamente.',
+            duration: 3000,
+            position: 'top',
+            color: 'success',
+          });
+          toast.present();
+        }
+      } else {
+        await this.firestoreService.crearAsistencia({
+          username: this.user,
+          asignatura,
+          fecha,
+          presente: true,
+        });
+        const toast = await this.toaster.create({
+          message: 'Asistencia registrada exitosamente.',
+          duration: 3000,
+          position: 'top',
+          color: 'success',
+        });
+        toast.present();
+      }
+    } catch (error) {
+      console.error('Error al registrar la asistencia:', error);
+      const toast = await this.toaster.create({
+        message: 'Error al registrar la asistencia. Intenta nuevamente.',
+        duration: 3000,
+        position: 'top',
+        color: 'danger',
+      });
+      toast.present();
+    }
   }
+  
 }

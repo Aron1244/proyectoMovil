@@ -17,123 +17,31 @@
       <ion-back-button class="btnRegreso" icon="arrow-back-outline" defaultHref="/home"></ion-back-button>
     </div>
     <br>
+  
     <ion-accordion-group>
-      <ion-accordion value="first">
+      <!-- Itera sobre los días de la semana -->
+      <ion-accordion *ngFor="let dia of dias" [value]="dia">
         <ion-item slot="header" lines="none">
-          <ion-label>Lunes</ion-label>
+          <ion-label>{{ dia }}</ion-label>
         </ion-item>
         <div slot="content">
-          <ion-card>
+          <!-- Filtra las asignaturas solo para el día actual -->
+          <ion-card *ngFor="let asignatura of asignaturasPorDia[dia]">
             <ion-card-header>
-              <ion-card-title>Programación</ion-card-title>
-              <ion-card-subtitle>Erwin Sepulveda</ion-card-subtitle>
+              <ion-card-title>{{ asignatura.nombre }}</ion-card-title>
+              <ion-card-subtitle>{{ asignatura.profesor }}</ion-card-subtitle>
             </ion-card-header>
-
-            <ion-card-content> 14:30 </ion-card-content>
+            <ion-card-content>{{ formatHora(asignatura.hora) }}</ion-card-content>
           </ion-card>
-        </div>
-      </ion-accordion>
 
-      <ion-accordion value="second">
-        <ion-item slot="header" lines="none">
-          <ion-label>Martes</ion-label>
-        </ion-item>
-        <div slot="content">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Matemática</ion-card-title>
-              <ion-card-subtitle>Jose Araujo</ion-card-subtitle>
-            </ion-card-header>
-
-            <ion-card-content> 14:30 </ion-card-content>
-          </ion-card>
-        </div>
-      </ion-accordion>
-
-      <ion-accordion value="third">
-        <ion-item slot="header" lines="none">
-          <ion-label>Miercoles</ion-label>
-        </ion-item>
-        <div slot="content">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Diseño de prototipos</ion-card-title>
-              <ion-card-subtitle>Maria Pino</ion-card-subtitle>
-            </ion-card-header>
-
-            <ion-card-content> 14:30 </ion-card-content>
-          </ion-card>
-        </div>
-      </ion-accordion>
-
-      <ion-accordion value="four">
-        <ion-item slot="header" lines="none">
-          <ion-label>Jueves</ion-label>
-        </ion-item>
-        <div slot="content">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Ética para el trabajo</ion-card-title>
-              <ion-card-subtitle>Sarai Molinero</ion-card-subtitle>
-            </ion-card-header>
-
-            <ion-card-content> 14:30 </ion-card-content>
-          </ion-card>
-        </div>
-      </ion-accordion>
-
-      <ion-accordion value="five">
-        <ion-item slot="header" lines="none">
-          <ion-label>viernes</ion-label>
-        </ion-item>
-        <div slot="content">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Programación</ion-card-title>
-              <ion-card-subtitle>Erwin Sepulveda</ion-card-subtitle>
-            </ion-card-header>
-
-            <ion-card-content> 14:30 </ion-card-content>
-          </ion-card>
-        </div>
-
-        <div slot="content">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Programación</ion-card-title>
-              <ion-card-subtitle>Erwin Sepulveda</ion-card-subtitle>
-            </ion-card-header>
-            <ion-card-content> 14:30 </ion-card-content>
-          </ion-card>
-        </div>
-      </ion-accordion>
-
-      <ion-accordion value="six">
-        <ion-item slot="header" lines="none">
-          <ion-label>Sabado</ion-label>
-        </ion-item>
-        <div slot="content">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Programación</ion-card-title>
-              <ion-card-subtitle>Erwin Sepulveda</ion-card-subtitle>
-            </ion-card-header>
-
-            <ion-card-content> 14:30 </ion-card-content>
-          </ion-card>
-        </div>
-
-        <div slot="content">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Ética</ion-card-title>
-              <ion-card-subtitle>Matias Álvarez</ion-card-subtitle>
-            </ion-card-header>
-            <ion-card-content> 14:30 </ion-card-content>
-          </ion-card>
+          <!-- Si no hay asignaturas para el día, muestra un mensaje -->
+          <div *ngIf="asignaturasPorDia[dia] && asignaturasPorDia[dia].length === 0">
+            <p>No tienes clases hoy.</p>
+          </div>
         </div>
       </ion-accordion>
     </ion-accordion-group>
+
   </div>
 
 

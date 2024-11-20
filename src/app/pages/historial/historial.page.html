@@ -5,12 +5,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <!-- <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">historial</ion-title>
-    </ion-toolbar>
-  </ion-header> -->
-
   <h1>Asistencia</h1>
   <div class="regreso">
     <ion-back-button class="btnRegreso" icon="arrow-back-outline" defaultHref="/home"></ion-back-button>
@@ -18,39 +12,21 @@
   <br />
 
   <ion-accordion-group>
-    <ion-accordion value="first">
+    <ion-accordion *ngFor="let asignatura of asignaturas">
       <ion-item slot="header" lines="none">
-        <ion-label>Matemática</ion-label>
+        <ion-label>{{ asignatura.nombre }}</ion-label> <!-- Asegúrate de que 'nombre' existe -->
       </ion-item>
-      <p class="ion-padding" slot="content">Nro clases registradas 5</p>
-      <p class="ion-padding" slot="content">Asistencia 2</p>
-    </ion-accordion>
-
-    <ion-accordion value="second">
-      <ion-item slot="header" lines="none">
-        <ion-label>Programación</ion-label>
-      </ion-item>
-      <p class="ion-padding" slot="content">Nro clases registradas 5</p>
-      <p class="ion-padding" slot="content">Asistencia 4</p>
-    </ion-accordion>
-
-    <ion-accordion value="third">
-      <ion-item slot="header" lines="none">
-        <ion-label>Ética para el Trabajo</ion-label>
-      </ion-item>
-      <p class="ion-padding" slot="content">Nro clases registradas 5</p>
-      <p class="ion-padding" slot="content">Asistencia 4</p>
-    </ion-accordion>
-
-    <ion-accordion value="four">
-      <ion-item slot="header" lines="none">
-        <ion-label>Diseño y requesito de software</ion-label>
-      </ion-item>
-      <p class="ion-padding" slot="content">Nro clases registradas: 5</p>
-      <p class="ion-padding" slot="content">Asistencia: 3</p>
+      <p class="ion-padding" slot="content">
+        Nro clases registradas: {{ getClasesRegistradas(asignatura?.nombre) }}
+      </p>
+      <p class="ion-padding" slot="content">
+        Asistencia: {{ getClasesAsistidas(asignatura?.nombre) }}
+      </p>            
     </ion-accordion>
   </ion-accordion-group>
+
 </ion-content>
+
 <ion-footer>
   <ion-toolbar>
     <ion-title class="titleFooter">App desarrollada por {{developer}}</ion-title>

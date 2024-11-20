@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import {
-  Firestore,
+  doc,
+  setDoc,
+  updateDoc,
+  addDoc,
   collection,
+  getDocs,
   query,
   where,
-  getDocs,
+  Firestore,
   QuerySnapshot,
 } from '@angular/fire/firestore';
 import { Login } from '../models/login';
+import { Asignatura } from '../models/asignatura';
 
 @Injectable({
   providedIn: 'root',
@@ -53,5 +58,64 @@ export class FirestoreService {
       console.error('Error al obtener el documento:', error);
       return null;
     }
+  }
+
+  async getAsistencia(username: string, asignatura: string, fecha: string): Promise<any | null> {
+    const asistenciaRef = collection(this.firestore, 'asistencias');
+    const q = query(
+      asistenciaRef,
+      where('username', '==', username),
+      where('asignatura', '==', asignatura),
+      where('fecha', '==', fecha)
+    );
+    const snapshot = await getDocs(q);
+    if (!snapshot.empty) {
+      const doc = snapshot.docs[0];
+      return { id: doc.id, ...doc.data() };
+    }
+    return null;
+  }
+
+  async actualizarAsistencia(id: string, data: any): Promise<void> {
+    const asistenciaDoc = doc(this.firestore, `asistencias/${id}`);
+    await updateDoc(asistenciaDoc, data);
+  }
+
+  async crearAsistencia(data: any): Promise<void> {
+    const asistenciaRef = collection(this.firestore, 'asistencias');
+    await addDoc(asistenciaRef, data);
+  }
+
+  async getAsignaturas(): Promise<Asignatura[]> {
+    const asignaturasCollection = collection(this.firestore, 'asignaturas');
+    const snapshot = await getDocs(asignaturasCollection);
+    const asignaturas: Asignatura[] = [];
+    
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      asignaturas.push(new Asignatura(
+        data['codigo'],
+        data['dia'],
+        data['hora'],
+        data['nombre'],
+        data['profesor'],
+        data['sala'],
+        data['seccion']
+      ));
+    });
+
+    return asignaturas;
+  }
+
+  async getAsistencias(username: string): Promise<any[]> {
+    const asistenciaRef = collection(this.firestore, 'asistencias');
+    const q = query(asistenciaRef, where('username', '==', username));
+    const snapshot = await getDocs(q);
+    
+    const asistencias: any[] = [];
+    snapshot.forEach((doc) => {
+      asistencias.push({ id: doc.id, ...doc.data() });
+    });
+    return asistencias;
   }
 }

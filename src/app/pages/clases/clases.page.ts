@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { Asignatura } from 'src/app/models/asignatura';
 import { FirestoreService } from 'src/app/services/firestore.service';
 
 @Component({
@@ -19,6 +20,10 @@ export class ClasesPage implements OnInit {
   occupation!: string;
   phone!: string;
   student_id!: number;
+
+  asignaturas: Asignatura[] = [];
+  asignaturasPorDia: { [key: string]: Asignatura[] } = {};
+  dias: string[] = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];  // Días de la semana
 
   constructor(
     private router: Router,
@@ -39,6 +44,7 @@ export class ClasesPage implements OnInit {
     if (this.user) {
       this.loadUserData(this.user);
     }
+    this.loadAsignaturas();
   }
 
   async loadUserData(username: string) {
@@ -76,4 +82,35 @@ export class ClasesPage implements OnInit {
     }
   }
 
+  async loadAsignaturas() {
+    try {
+      const asignaturas = await this.firestoreService.getAsignaturas();
+      this.asignaturas = asignaturas;
+
+      // Agrupar las asignaturas por día
+      this.asignaturasPorDia = this.groupAsignaturasByDay(asignaturas);
+    } catch (error) {
+      console.error('Error al cargar las asignaturas', error);
+    }
+  }
+
+  groupAsignaturasByDay(asignaturas: Asignatura[]): { [key: string]: Asignatura[] } {
+    return asignaturas.reduce((acc: { [key: string]: Asignatura[] }, asignatura) => {
+      const dia = asignatura.dia;  // Día de la asignatura
+      if (!acc[dia]) {
+        acc[dia] = [];
+      }
+      acc[dia].push(asignatura);
+      return acc;
+    }, {});
+  }
+
+  formatHora(timestamp: Timestamp): string {
+    const date = timestamp.toDate();  // Convertir el Timestamp a Date
+    const hours = date.getHours();     // Obtener las horas
+    const minutes = date.getMinutes(); // Obtener los minutos
+    
+    // Formatear como HH:mm (con dos dígitos)
+    return `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+  }
 }
