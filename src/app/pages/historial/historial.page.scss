@@ -63,24 +63,22 @@ ion-accordion-group {
   ion-accordion {
     background: #2f4550;
     color: #f4f4f9;
-    font-family: system-ui, sans-serif;
 
     ion-item {
       --background: #2f4550;
       --color: #f4f4f9;
-      font-family: system-ui, sans-serif;
     }
 
     div[slot="content"] {
       background: #2f4550;
-      color: #f4f4f9;
+      color: #f4f4f9;  // Asegúrate de que este color sea adecuado para el fondo
       font-family: system-ui, sans-serif;
+      padding: 10px;  // Añadir algo de espacio en el contenido
     }
 
     ion-card {
       background: #2f4550;
       color: #f4f4f9;
-      font-family: system-ui, sans-serif;
     }
   }
 }

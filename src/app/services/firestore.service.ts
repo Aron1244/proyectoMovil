@@ -12,6 +12,7 @@ import {
   QuerySnapshot,
 } from '@angular/fire/firestore';
 import { Login } from '../models/login';
+import { Asignatura } from '../models/asignatura';
 
 @Injectable({
   providedIn: 'root',
@@ -83,5 +84,38 @@ export class FirestoreService {
   async crearAsistencia(data: any): Promise<void> {
     const asistenciaRef = collection(this.firestore, 'asistencias');
     await addDoc(asistenciaRef, data);
+  }
+
+  async getAsignaturas(): Promise<Asignatura[]> {
+    const asignaturasCollection = collection(this.firestore, 'asignaturas');
+    const snapshot = await getDocs(asignaturasCollection);
+    const asignaturas: Asignatura[] = [];
+    
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      asignaturas.push(new Asignatura(
+        data['codigo'],
+        data['dia'],
+        data['hora'],
+        data['nombre'],
+        data['profesor'],
+        data['sala'],
+        data['seccion']
+      ));
+    });
+
+    return asignaturas;
+  }
+
+  async getAsistencias(username: string): Promise<any[]> {
+    const asistenciaRef = collection(this.firestore, 'asistencias');
+    const q = query(asistenciaRef, where('username', '==', username));
+    const snapshot = await getDocs(q);
+    
+    const asistencias: any[] = [];
+    snapshot.forEach((doc) => {
+      asistencias.push({ id: doc.id, ...doc.data() });
+    });
+    return asistencias;
   }
 }
