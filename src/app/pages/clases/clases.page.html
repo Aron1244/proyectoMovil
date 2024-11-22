@@ -14,41 +14,55 @@
   <div class="square">
     <h1>Asignaturas</h1>
     <div class="regreso">
-      <ion-back-button class="btnRegreso" icon="arrow-back-outline" defaultHref="/home"></ion-back-button>
+      <ion-back-button
+        class="btnRegreso"
+        icon="arrow-back-outline"
+        defaultHref="/home"
+      ></ion-back-button>
     </div>
-    <br>
-  
+    <br />
+
     <ion-accordion-group>
       <!-- Itera sobre los días de la semana -->
       <ion-accordion *ngFor="let dia of dias" [value]="dia">
         <ion-item slot="header" lines="none">
           <ion-label>{{ dia }}</ion-label>
         </ion-item>
-        <div slot="content">
+        <div slot="content" lines="none">
           <!-- Filtra las asignaturas solo para el día actual -->
-          <ion-card *ngFor="let asignatura of asignaturasPorDia[dia]">
-            <ion-card-header>
-              <ion-card-title>{{ asignatura.nombre }}</ion-card-title>
-              <ion-card-subtitle>{{ asignatura.profesor }}</ion-card-subtitle>
+          <ion-card
+            *ngFor="let asignatura of asignaturasPorDia[dia]"
+            lines="none"
+          >
+            <ion-card-header lines="none">
+              <ion-card-title lines="none"
+                >{{ asignatura.nombre }}</ion-card-title
+              >
+              <ion-card-subtitle lines="none"
+                >{{ asignatura.profesor }}</ion-card-subtitle
+              >
             </ion-card-header>
-            <ion-card-content>{{ formatHora(asignatura.hora) }}</ion-card-content>
+            <ion-card-content lines="none">
+              {{ formatHora(asignatura.hora) }}
+            </ion-card-content>
           </ion-card>
 
           <!-- Si no hay asignaturas para el día, muestra un mensaje -->
-          <div *ngIf="asignaturasPorDia[dia] && asignaturasPorDia[dia].length === 0">
+          <div
+            *ngIf="asignaturasPorDia[dia] && asignaturasPorDia[dia].length === 0"
+          >
             <p>No tienes clases hoy.</p>
           </div>
         </div>
       </ion-accordion>
     </ion-accordion-group>
-
   </div>
-
-
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-title class="titleFooter">App desarrollada por {{developer}}</ion-title>
+    <ion-title class="titleFooter"
+      >App desarrollada por {{developer}}</ion-title
+    >
   </ion-toolbar>
 </ion-footer>

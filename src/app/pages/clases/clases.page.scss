@@ -90,4 +90,27 @@ ion-accordion-group {
       font-family: system-ui, sans-serif;
     }
   }
+
+  ion-card-header {
+    color: #2f4550;
+    background-color: #f4f4f9;
+    border-bottom: none;
+  }
+
+  ion-card-title {
+    color: #2f4550;
+    background-color: #f4f4f9;
+  }
+
+  ion-card-subtitle {
+    color: #2f4550;
+    background-color: #f4f4f9;
+  }
+
+  ion-card-content {
+    background-color: #f4f4f9;
+    color: #2f4550;
+    border-top: none;
+  }
+
 }

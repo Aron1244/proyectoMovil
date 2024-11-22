@@ -14,14 +14,17 @@
   <ion-accordion-group>
     <ion-accordion *ngFor="let asignatura of asignaturas">
       <ion-item slot="header" lines="none">
-        <ion-label>{{ asignatura.nombre }}</ion-label> <!-- Asegúrate de que 'nombre' existe -->
+        <ion-label>{{ asignatura.nombre }}</ion-label>
       </ion-item>
       <p class="ion-padding" slot="content">
-        Nro clases registradas: {{ getClasesRegistradas(asignatura?.nombre) }}
+        Nro clases registradas: {{ totalClasesRegistradas }}
       </p>
       <p class="ion-padding" slot="content">
-        Asistencia: {{ getClasesAsistidas(asignatura?.nombre) }}
-      </p>            
+        Asistencia: {{ totalClasesAsistidas }}
+      </p>
+      <p class="ion-padding" slot="content">
+        Clases faltadas: {{ totalClasesFaltantes }}
+      </p>
     </ion-accordion>
   </ion-accordion-group>
 
