@@ -20,10 +20,15 @@ export class HistorialPage implements OnInit {
   phone!: string;
   student_id!: number;
 
-  asignaturas: any[] = [];  // Lista de asignaturas
-  asistencias: any[] = [];  // Lista de asistencias
-  historial: { [key: string]: { clasesRegistradas: number, clasesAsistidas: number } } = {};
+  asignaturas: any[] = []; // Lista de asignaturas
+  asistencias: any[] = []; // Lista de asistencias
+  historial: {
+    [key: string]: { clasesRegistradas: number; clasesAsistidas: number };
+  } = {};
 
+  totalClasesAsistidas: number = 0;
+  totalClasesRegistradas: number = 0;
+  totalClasesFaltantes: number = 0;
 
   constructor(
     private router: Router,
@@ -98,49 +103,43 @@ export class HistorialPage implements OnInit {
   async loadAsistencias() {
     try {
       this.asistencias = await this.firestoreService.getAsistencias(this.user);
-      console.log('Asistencias:', this.asistencias);  // Revisa la estructura de los datos
+      console.log('Asistencias:', this.asistencias); // Revisa la estructura de los datos
       this.groupAsistencias();
     } catch (error) {
       console.error('Error al cargar las asistencias', error);
     }
   }
-  
-  
+
   groupAsistencias() {
-    this.asistencias.forEach(asistencia => {
+    this.totalClasesAsistidas = 0;
+    this.totalClasesRegistradas = 0;
+    this.totalClasesFaltantes = 0;
+    this.asistencias.forEach((asistencia) => {
       const asignatura = asistencia.asignatura;
-  
-      // Verifica si ya existe una entrada en 'historial' para esta asignatura
+      this.totalClasesRegistradas += 1;
       if (!this.historial[asignatura]) {
-        // Si no existe, inicializa el objeto
-        this.historial[asignatura] = { clasesRegistradas: 0, clasesAsistidas: 0 };
+        this.historial[asignatura] = {
+          clasesRegistradas: 0,
+          clasesAsistidas: 0,
+        };
       }
-  
-      // Asegúrate de que el objeto 'historial[asignatura]' esté definido antes de acceder a sus propiedades
       if (this.historial[asignatura]) {
-        // Sumar una clase registrada para la asignatura
         this.historial[asignatura].clasesRegistradas += 1;
-  
-        // Si 'presente' es true, sumar una clase asistida
         if (asistencia.presente === true) {
           this.historial[asignatura].clasesAsistidas += 1;
+          this.totalClasesAsistidas += 1; // Incrementa el total de clases asistidas
         }
       } else {
-        console.error(`Historial no definido para la asignatura: ${asignatura}`);
+        console.error(
+          `Historial no definido para la asignatura: ${asignatura}`
+        );
       }
     });
-  
-    console.log(this.historial);  // Verifica que 'historial' se está actualizando correctamente
+    this.totalClasesFaltantes = this.totalClasesRegistradas - this.totalClasesAsistidas;
+    console.log(this.historial);
+    console.log('Total clases registradas:', this.totalClasesRegistradas);
+    console.log('Total clases asistidas:', this.totalClasesAsistidas);
+    console.log('Total clases faltantes:', this.totalClasesFaltantes);
   }
-  
 
-  getClasesRegistradas(asignaturaNombre: string): number {
-    return this.historial[asignaturaNombre]?.clasesRegistradas || 0;
-  }
-  
-  getClasesAsistidas(asignaturaNombre: string): number {
-    return this.historial[asignaturaNombre]?.clasesAsistidas || 0;
-  }
-  
-  
 }
