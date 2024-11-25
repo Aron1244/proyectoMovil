@@ -3,6 +3,7 @@ import { Timestamp } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Asignatura } from 'src/app/models/asignatura';
 import { FirestoreService } from 'src/app/services/firestore.service';
+import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
   selector: 'app-clases',
@@ -27,7 +28,8 @@ export class ClasesPage implements OnInit {
 
   constructor(
     private router: Router,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private loadingService: LoadingService,
   ) {
     console.log('UserInfoPage constructor called');
     const navigation = this.router.getCurrentNavigation();
@@ -49,6 +51,7 @@ export class ClasesPage implements OnInit {
 
   async loadUserData(username: string) {
     try {
+      await this.loadingService.mostrarLoading();
       const userData = await this.firestoreService.getData(username);
       console.log('Datos del usuario:', userData);
       if (userData) {
@@ -79,6 +82,8 @@ export class ClasesPage implements OnInit {
     } catch (error) {
       console.error('Error al cargar los datos del usuario:', error);
       this.email = 'Error loading data';
+    }finally{
+      await this.loadingService.ocultarLoading();
     }
   }
 
@@ -109,7 +114,7 @@ export class ClasesPage implements OnInit {
     const date = timestamp.toDate();  // Convertir el Timestamp a Date
     const hours = date.getHours();     // Obtener las horas
     const minutes = date.getMinutes(); // Obtener los minutos
-    
+
     // Formatear como HH:mm (con dos dígitos)
     return `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
   }

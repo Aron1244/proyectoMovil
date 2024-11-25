@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { FirestoreService } from 'src/app/services/firestore.service';
+import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
   selector: 'app-historial',
@@ -32,7 +33,8 @@ export class HistorialPage implements OnInit {
 
   constructor(
     private router: Router,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private loadingService: LoadingService,
   ) {
     console.log('UserInfoPage constructor called');
     const navigation = this.router.getCurrentNavigation();
@@ -55,6 +57,7 @@ export class HistorialPage implements OnInit {
 
   async loadUserData(username: string) {
     try {
+      await this.loadingService.mostrarLoading();
       const userData = await this.firestoreService.getData(username);
       console.log('Datos del usuario:', userData);
       if (userData) {
@@ -88,6 +91,8 @@ export class HistorialPage implements OnInit {
     } catch (error) {
       console.error('Error al cargar los datos del usuario:', error);
       this.email = 'Error loading data';
+    }finally{
+      await this.loadingService.ocultarLoading();
     }
   }
 
