@@ -21,26 +21,18 @@
 
     <ion-list>
       <ion-item lines="none">
+        <ion-label position="floating">Correo electrónico</ion-label>
         <ion-input
-          type="text"
+          type="email"
+          [(ngModel)]="correo"
           labelPlacement="floating"
-          label="Ingrese un Usuario valido"
-          errorText="Usuario Invalido"
           ngModel
           username
         ></ion-input>
       </ion-item>
       <ion-item lines="none">
-        <ion-button id="present-alert" [routerLink]="['/login']" expand="block"
-          >Recuperar contraseña</ion-button
-        >
-
-        <ion-alert
-          trigger="present-alert"
-          header="Recibido"
-          message="Se ha enviado un Codigo a su correo."
-          [buttons]="alertButtons"
-        ></ion-alert>
+        <ion-button (click)="updatePasswordByEmail(correo)"   expand="block"
+          >Recuperar contraseña</ion-button>
       </ion-item>
     </ion-list>
     <br />

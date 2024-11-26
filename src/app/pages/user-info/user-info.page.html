@@ -1,6 +1,12 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Informacion Personal</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon name="pencil-outline"></ion-icon>
+      <ion-button (click)="toggleEditMode()">
+        {{ editMode ? 'Cancelar' : 'Editar' }}
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -11,7 +17,7 @@
     </ion-toolbar>
   </ion-header> -->
 
-  <div class="container">
+  <div class="container" *ngIf="!editMode">
     <h2>Usuario: {{user}}</h2>
     <h3>Nombre: {{name}}</h3>
     <div class="regreso">
@@ -59,6 +65,39 @@
       </ion-item>
     </ion-list>
   </div>
+  <!-- esto es el formulario para editar -->
+  <form [formGroup]="userForm" *ngIf="editMode" (ngSubmit)="saveChanges()">
+    <h3>Editar Información Básica</h3>
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Correo Electrónico</ion-label>
+        <ion-input type="email" formControlName="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+    </ion-list>
+    <h3>Editar Información Adicional</h3>
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Sexo</ion-label>
+        <ion-input type="text" formControlName="genre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Teléfono</ion-label>
+        <ion-input type="text" formControlName="phone"></ion-input>
+      </ion-item>
+    </ion-list>
+    <!-- Botones para guardar o cancelar -->
+    <ion-button expand="full" type="submit" [disabled]="userForm.invalid">
+      Guardar Cambios
+    </ion-button>
+    <ion-button expand="full" color="medium" (click)="toggleEditMode()">
+      Cancelar
+    </ion-button>
+  </form>
 </ion-content>
 
 <ion-footer>

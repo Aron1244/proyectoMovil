@@ -10,6 +10,7 @@ import {
   where,
   Firestore,
   QuerySnapshot,
+  DocumentReference,
 } from '@angular/fire/firestore';
 import { Login } from '../models/login';
 import { Asignatura } from '../models/asignatura';
@@ -90,7 +91,7 @@ export class FirestoreService {
     const asignaturasCollection = collection(this.firestore, 'asignaturas');
     const snapshot = await getDocs(asignaturasCollection);
     const asignaturas: Asignatura[] = [];
-    
+
     snapshot.forEach((doc) => {
       const data = doc.data();
       asignaturas.push(new Asignatura(
@@ -111,11 +112,35 @@ export class FirestoreService {
     const asistenciaRef = collection(this.firestore, 'asistencias');
     const q = query(asistenciaRef, where('username', '==', username));
     const snapshot = await getDocs(q);
-    
+
     const asistencias: any[] = [];
     snapshot.forEach((doc) => {
       asistencias.push({ id: doc.id, ...doc.data() });
     });
     return asistencias;
+  }
+
+  async updateUser(username: string, updatedData: Partial<Login>): Promise<void> {
+    try {
+      // Referencia a la colección 'users'
+      const usersCollection = collection(this.firestore, 'users');
+      const q = query(usersCollection, where('username', '==', username));
+
+      // Ejecutar la consulta
+      const querySnapshot: QuerySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0]; // Obtener el primer documento que coincide
+        const userDocRef: DocumentReference = userDoc.ref; // Referencia al documento encontrado
+
+        // Actualizar los datos en Firestore
+        await updateDoc(userDocRef, updatedData);
+        console.log('Datos del usuario actualizados exitosamente');
+      } else {
+        console.error('No se encontró un usuario con el username:', username);
+      }
+    } catch (error) {
+      console.error('Error al actualizar los datos del usuario:', error);
+    }
   }
 }
