@@ -29,6 +29,8 @@ export class HomePage implements OnInit {
   private targetLatitude = -33.44966139614493;
   private targetLongitude = -70.6945602164515;
   private distanceThreshold = 2000;
+  private deviceLatitude!: number;
+  private deviceLongitude!: number;
 
   result: string = '';
   constructor(
@@ -148,14 +150,16 @@ export class HomePage implements OnInit {
   async leerQr(): Promise<void> {
     try {
       const coordinates = await Geolocation.getCurrentPosition();
+      this.deviceLatitude = coordinates.coords.latitude;
+      this.deviceLongitude = coordinates.coords.longitude;
       const currentLatitude = coordinates.coords.latitude;
       const currentLongitude = coordinates.coords.longitude;
   
-      console.log('Coordenadas obtenidas: ', currentLatitude, currentLongitude);
+      console.log('Coordenadas obtenidas: ', this.deviceLatitude, this.deviceLongitude);
   
       const distance = this.calculateDistance(
-        currentLatitude,
-        currentLongitude,
+        this.deviceLatitude,
+        this.deviceLongitude,
         this.targetLatitude,
         this.targetLongitude
       );
