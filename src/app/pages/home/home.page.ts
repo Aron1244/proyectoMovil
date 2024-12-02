@@ -6,7 +6,7 @@ import { ClimateService } from 'src/app/services/climate.service';
 import { Geolocation } from '@capacitor/geolocation';
 import { HttpClient } from '@angular/common/http';
 import { FirestoreService } from 'src/app/services/firestore.service';
-
+import { LoadingService } from 'src/app/services/loading.service';
 import {
   CapacitorBarcodeScanner,
   CapacitorBarcodeScannerTypeHint,
@@ -40,7 +40,8 @@ export class HomePage implements OnInit {
     private loginService: LoginService,
     private climateService: ClimateService,
     private http: HttpClient,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private loadingService: LoadingService,
   ) {
     this.activeroute.queryParams.subscribe(async (params) => {
       let state = this.router.getCurrentNavigation()?.extras.state;
@@ -149,32 +150,33 @@ export class HomePage implements OnInit {
 
   async leerQr(): Promise<void> {
     try {
+      await this.loadingService.mostrarLoading();
       const coordinates = await Geolocation.getCurrentPosition();
       this.deviceLatitude = coordinates.coords.latitude;
       this.deviceLongitude = coordinates.coords.longitude;
       const currentLatitude = coordinates.coords.latitude;
       const currentLongitude = coordinates.coords.longitude;
-  
-      console.log('Coordenadas obtenidas: ', this.deviceLatitude, this.deviceLongitude);
-  
+
+      console.log('Coordenadas obtenidas: ', currentLatitude, currentLongitude);
+
       const distance = this.calculateDistance(
         this.deviceLatitude,
         this.deviceLongitude,
         this.targetLatitude,
         this.targetLongitude
       );
-  
+
       console.log('Distancia calculada:', distance);
-  
+
       if (distance <= this.distanceThreshold) {
         const result = await CapacitorBarcodeScanner.scanBarcode({
           hint: CapacitorBarcodeScannerTypeHint.ALL,
         });
         this.result = result.ScanResult;
-  
+
         const [asignatura, seccion, sala, fecha] = this.result.split('|');
         console.log('Datos del QR:', { asignatura, seccion, sala, fecha });
-  
+
         await this.verificarYRegistrarAsistencia(asignatura, fecha);
       } else {
         const toast = await this.toaster.create({
@@ -194,9 +196,11 @@ export class HomePage implements OnInit {
         color: 'danger',
       });
       toast.present();
+    } finally {
+      await this.loadingService.ocultarLoading();
     }
   }
-  
+
 
   // Función para calcular la distancia en metros entre dos puntos de latitud/longitud
   calculateDistance(
@@ -218,16 +222,16 @@ export class HomePage implements OnInit {
     const distance = earthRadius * c * 1000; // Convertir a metros
     console.log('Distancia calculada:', distance);
     return distance;
-  }  
+  }
 
   deg2rad(deg: number): number {
     return deg * (Math.PI / 180);
-  }  
+  }
 
   async verificarYRegistrarAsistencia(asignatura: string, fecha: string): Promise<void> {
     try {
       const asistencia = await this.firestoreService.getAsistencia(this.user, asignatura, fecha);
-  
+
       if (asistencia) {
         if (asistencia.presente) {
           const toast = await this.toaster.create({
@@ -273,5 +277,5 @@ export class HomePage implements OnInit {
       toast.present();
     }
   }
-  
+
 }

@@ -13,7 +13,8 @@ import { RestPassPage } from './rest-pass.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    RestPassPageRoutingModule
+    RestPassPageRoutingModule,
+    FormsModule,
   ],
   declarations: [RestPassPage]
 })
