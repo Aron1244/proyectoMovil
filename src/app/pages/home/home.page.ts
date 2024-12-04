@@ -26,9 +26,11 @@ export class HomePage implements OnInit {
   error: string | null = null; // Variable para manejar el error
 
   // Coordenadas de la ubicación objetivo
-  private targetLatitude = -33.44966139614493;
-  private targetLongitude = -70.6945602164515;
-  private distanceThreshold = 2000;
+  private targetLatitude = -33.500255412054884;
+  private targetLongitude = -70.6164766547646;
+  private distanceThreshold = 3000;
+  private deviceLatitude!: number;
+  private deviceLongitude!: number;
 
   result: string = '';
   constructor(
@@ -39,7 +41,7 @@ export class HomePage implements OnInit {
     private climateService: ClimateService,
     private http: HttpClient,
     private firestoreService: FirestoreService,
-    private loadingService: LoadingService,
+    private loadingService: LoadingService
   ) {
     this.activeroute.queryParams.subscribe(async (params) => {
       let state = this.router.getCurrentNavigation()?.extras.state;
@@ -147,42 +149,70 @@ export class HomePage implements OnInit {
   }
 
   async leerQr(): Promise<void> {
+    let timeout: any; // Declaración de la variable 'timeout'
+
     try {
-      await this.loadingService.mostrarLoading();
+      console.log('Iniciando proceso de carga...');
+      await this.loadingService.mostrarLoading(); // Mostrar loading al inicio
+
+      // Establecer un timeout de 3 segundos para asegurar que el loading se cierre
+      timeout = setTimeout(async () => {
+        console.log('Tiempo de espera agotado. Ocultando loading...');
+        await this.loadingService.ocultarLoading(); // Cerrar el loading después de 3 segundos
+      }, 3000); // 3 segundos
+
+      // Obtener ubicación del dispositivo
       const coordinates = await Geolocation.getCurrentPosition();
-      const currentLatitude = coordinates.coords.latitude;
-      const currentLongitude = coordinates.coords.longitude;
+      this.deviceLatitude = coordinates.coords.latitude;
+      this.deviceLongitude = coordinates.coords.longitude;
+      const currentLatitude = this.deviceLatitude;
+      const currentLongitude = this.deviceLongitude;
 
       console.log('Coordenadas obtenidas: ', currentLatitude, currentLongitude);
 
       const distance = this.calculateDistance(
-        currentLatitude,
-        currentLongitude,
+        this.deviceLatitude,
+        this.deviceLongitude,
         this.targetLatitude,
         this.targetLongitude
       );
 
       console.log('Distancia calculada:', distance);
 
-      if (distance <= this.distanceThreshold) {
-        const result = await CapacitorBarcodeScanner.scanBarcode({
-          hint: CapacitorBarcodeScannerTypeHint.ALL,
-        });
-        this.result = result.ScanResult;
-
-        const [asignatura, seccion, sala, fecha] = this.result.split('|');
-        console.log('Datos del QR:', { asignatura, seccion, sala, fecha });
-
-        await this.verificarYRegistrarAsistencia(asignatura, fecha);
-      } else {
+      // Si la distancia es mayor que el umbral, mostrar un mensaje y salir
+      if (distance > this.distanceThreshold) {
         const toast = await this.toaster.create({
-          message: `Estás demasiado lejos para escanear el código QR. Distancia: ${distance.toFixed(2)} m.`,
+          message: `Estás demasiado lejos para escanear el código QR. Distancia: ${distance.toFixed(
+            2
+          )} m.`,
           duration: 3000,
           position: 'top',
           color: 'danger',
         });
         toast.present();
+        clearTimeout(timeout); // Limpiar el timeout si la distancia no es válida
+        return; // Salir de la función si la distancia no es válida
       }
+
+      // Proceder con el escaneo del código QR
+      const result = await CapacitorBarcodeScanner.scanBarcode({
+        hint: CapacitorBarcodeScannerTypeHint.ALL,
+      });
+
+      // Verificar si el escaneo fue cancelado (ScanResult vacío o null)
+      if (!result || !result.ScanResult) {
+        console.log('Escaneo cancelado o sin resultados.');
+        clearTimeout(timeout); // Limpiar el timeout si el escaneo es cancelado
+        return; // Salir si el escaneo fue cancelado
+      }
+
+      // Si el escaneo fue exitoso
+      this.result = result.ScanResult;
+
+      const [asignatura, seccion, sala, fecha] = this.result.split('|');
+      console.log('Datos del QR:', { asignatura, seccion, sala, fecha });
+
+      await this.verificarYRegistrarAsistencia(asignatura, fecha);
     } catch (error) {
       console.error('Error obteniendo la ubicación o procesando el QR', error);
       const toast = await this.toaster.create({
@@ -193,10 +223,12 @@ export class HomePage implements OnInit {
       });
       toast.present();
     } finally {
+      // Limpiar el timeout y ocultar el loading si no se ha ocultado aún
+      clearTimeout(timeout);
+      console.log('Finalizando proceso, ocultando loading...');
       await this.loadingService.ocultarLoading();
     }
   }
-
 
   // Función para calcular la distancia en metros entre dos puntos de latitud/longitud
   calculateDistance(
@@ -224,9 +256,16 @@ export class HomePage implements OnInit {
     return deg * (Math.PI / 180);
   }
 
-  async verificarYRegistrarAsistencia(asignatura: string, fecha: string): Promise<void> {
+  async verificarYRegistrarAsistencia(
+    asignatura: string,
+    fecha: string
+  ): Promise<void> {
     try {
-      const asistencia = await this.firestoreService.getAsistencia(this.user, asignatura, fecha);
+      const asistencia = await this.firestoreService.getAsistencia(
+        this.user,
+        asignatura,
+        fecha
+      );
 
       if (asistencia) {
         if (asistencia.presente) {
@@ -238,7 +277,9 @@ export class HomePage implements OnInit {
           });
           toast.present();
         } else {
-          await this.firestoreService.actualizarAsistencia(asistencia.id, { presente: true });
+          await this.firestoreService.actualizarAsistencia(asistencia.id, {
+            presente: true,
+          });
           const toast = await this.toaster.create({
             message: 'Asistencia registrada exitosamente.',
             duration: 3000,
@@ -273,5 +314,4 @@ export class HomePage implements OnInit {
       toast.present();
     }
   }
-
 }
