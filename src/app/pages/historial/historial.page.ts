@@ -31,10 +31,13 @@ export class HistorialPage implements OnInit {
   totalClasesRegistradas: number = 0;
   totalClasesFaltantes: number = 0;
 
+  listaClasesAsistidas: any[] = [];
+  listaClasesFaltantes: any[] = [];
+
   constructor(
     private router: Router,
     private firestoreService: FirestoreService,
-    private loadingService: LoadingService,
+    private loadingService: LoadingService
   ) {
     console.log('UserInfoPage constructor called');
     const navigation = this.router.getCurrentNavigation();
@@ -91,7 +94,7 @@ export class HistorialPage implements OnInit {
     } catch (error) {
       console.error('Error al cargar los datos del usuario:', error);
       this.email = 'Error loading data';
-    }finally{
+    } finally {
       await this.loadingService.ocultarLoading();
     }
   }
@@ -119,6 +122,10 @@ export class HistorialPage implements OnInit {
     this.totalClasesAsistidas = 0;
     this.totalClasesRegistradas = 0;
     this.totalClasesFaltantes = 0;
+
+    this.listaClasesAsistidas = [];
+    this.listaClasesFaltantes = [];
+
     this.asistencias.forEach((asistencia) => {
       const asignatura = asistencia.asignatura;
       this.totalClasesRegistradas += 1;
@@ -132,19 +139,23 @@ export class HistorialPage implements OnInit {
         this.historial[asignatura].clasesRegistradas += 1;
         if (asistencia.presente === true) {
           this.historial[asignatura].clasesAsistidas += 1;
-          this.totalClasesAsistidas += 1; // Incrementa el total de clases asistidas
+          this.totalClasesAsistidas += 1;
+          this.listaClasesAsistidas.push(asistencia);
+        } else {
+          this.listaClasesFaltantes.push(asistencia);
         }
-      } else {
-        console.error(
-          `Historial no definido para la asignatura: ${asignatura}`
-        );
       }
     });
-    this.totalClasesFaltantes = this.totalClasesRegistradas - this.totalClasesAsistidas;
-    console.log(this.historial);
-    console.log('Total clases registradas:', this.totalClasesRegistradas);
-    console.log('Total clases asistidas:', this.totalClasesAsistidas);
-    console.log('Total clases faltantes:', this.totalClasesFaltantes);
-  }
 
+    this.totalClasesFaltantes =
+      this.totalClasesRegistradas - this.totalClasesAsistidas;
+
+    console.log('Clases Asistidas:', this.listaClasesAsistidas);
+    console.log('Clases Faltantes:', this.listaClasesFaltantes);
+
+    // Forzar que los cambios se detecten
+    setTimeout(() => {
+      console.log('Detección de cambios forzada');
+    }, 0);
+  }
 }

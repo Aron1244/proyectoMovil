@@ -7,7 +7,11 @@
 <ion-content [fullscreen]="true">
   <h1>Asistencia</h1>
   <div class="regreso">
-    <ion-back-button class="btnRegreso" icon="arrow-back-outline" defaultHref="/home"></ion-back-button>
+    <ion-back-button
+      class="btnRegreso"
+      icon="arrow-back-outline"
+      defaultHref="/home"
+    ></ion-back-button>
   </div>
   <br />
 
@@ -27,11 +31,31 @@
       </p>
     </ion-accordion>
   </ion-accordion-group>
+  <!-- Mostrar clases asistidas -->
+  <div *ngIf="listaClasesAsistidas.length > 0">
+    <h3>Clases Asistidas</h3>
+    <ul>
+      <li *ngFor="let clase of listaClasesAsistidas">
+        {{ clase.asignatura }} - {{ clase.fecha }} - Asistencia: Asistido
+      </li>
+    </ul>
+  </div>
 
+  <!-- Mostrar clases faltantes -->
+  <div *ngIf="listaClasesFaltantes.length > 0">
+    <h3>Clases Faltantes</h3>
+    <ul>
+      <li *ngFor="let clase of listaClasesFaltantes">
+        {{ clase.asignatura }} - {{ clase.fecha }} - Asistencia: Faltante
+      </li>
+    </ul>
+  </div>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-title class="titleFooter">App desarrollada por {{developer}}</ion-title>
+    <ion-title class="titleFooter"
+      >App desarrollada por {{ developer }}</ion-title
+    >
   </ion-toolbar>
 </ion-footer>

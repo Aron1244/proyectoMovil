@@ -26,8 +26,8 @@ export class HomePage implements OnInit {
   error: string | null = null; // Variable para manejar el error
 
   // Coordenadas de la ubicación objetivo
-  private targetLatitude = -33.44966139614493;
-  private targetLongitude = -70.6945602164515;
+  private targetLatitude = -33.500255412054884;
+  private targetLongitude = -70.6164766547646;
   private distanceThreshold = 3000;
   private deviceLatitude!: number;
   private deviceLongitude!: number;
@@ -165,8 +165,8 @@ export class HomePage implements OnInit {
       const coordinates = await Geolocation.getCurrentPosition();
       this.deviceLatitude = coordinates.coords.latitude;
       this.deviceLongitude = coordinates.coords.longitude;
-      const currentLatitude = coordinates.coords.latitude;
-      const currentLongitude = coordinates.coords.longitude;
+      const currentLatitude = this.deviceLatitude;
+      const currentLongitude = this.deviceLongitude;
 
       console.log('Coordenadas obtenidas: ', currentLatitude, currentLongitude);
 
