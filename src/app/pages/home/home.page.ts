@@ -28,7 +28,7 @@ export class HomePage implements OnInit {
   // Coordenadas de la ubicación objetivo
   private targetLatitude = -33.500255412054884;
   private targetLongitude = -70.6164766547646;
-  private distanceThreshold = 3000;
+  private distanceThreshold = 20000;
   private deviceLatitude!: number;
   private deviceLongitude!: number;
 
@@ -212,6 +212,24 @@ export class HomePage implements OnInit {
       const [asignatura, seccion, sala, fecha] = this.result.split('|');
       console.log('Datos del QR:', { asignatura, seccion, sala, fecha });
 
+      // Validar si la asignatura existe en la base de datos
+      const asignaturaExiste = await this.firestoreService.getAsignatura(
+        asignatura
+      );
+
+      if (!asignaturaExiste) {
+        const toast = await this.toaster.create({
+          message: `La asignatura ${asignatura} no existe en el sistema.`,
+          duration: 3000,
+          position: 'top',
+          color: 'danger',
+        });
+        toast.present();
+        clearTimeout(timeout); // Limpiar el timeout si la asignatura no existe
+        return; // Salir si no existe la asignatura
+      }
+
+      // Registrar la asistencia si la asignatura existe
       await this.verificarYRegistrarAsistencia(asignatura, fecha);
     } catch (error) {
       console.error('Error obteniendo la ubicación o procesando el QR', error);

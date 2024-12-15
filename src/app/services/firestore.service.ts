@@ -61,7 +61,11 @@ export class FirestoreService {
     }
   }
 
-  async getAsistencia(username: string, asignatura: string, fecha: string): Promise<any | null> {
+  async getAsistencia(
+    username: string,
+    asignatura: string,
+    fecha: string
+  ): Promise<any | null> {
     const asistenciaRef = collection(this.firestore, 'asistencias');
     const q = query(
       asistenciaRef,
@@ -94,15 +98,17 @@ export class FirestoreService {
 
     snapshot.forEach((doc) => {
       const data = doc.data();
-      asignaturas.push(new Asignatura(
-        data['codigo'],
-        data['dia'],
-        data['hora'],
-        data['nombre'],
-        data['profesor'],
-        data['sala'],
-        data['seccion']
-      ));
+      asignaturas.push(
+        new Asignatura(
+          data['codigo'],
+          data['dia'],
+          data['hora'],
+          data['nombre'],
+          data['profesor'],
+          data['sala'],
+          data['seccion']
+        )
+      );
     });
 
     return asignaturas;
@@ -120,7 +126,10 @@ export class FirestoreService {
     return asistencias;
   }
 
-  async updateUser(username: string, updatedData: Partial<Login>): Promise<void> {
+  async updateUser(
+    username: string,
+    updatedData: Partial<Login>
+  ): Promise<void> {
     try {
       // Referencia a la colección 'users'
       const usersCollection = collection(this.firestore, 'users');
@@ -141,6 +150,20 @@ export class FirestoreService {
       }
     } catch (error) {
       console.error('Error al actualizar los datos del usuario:', error);
+    }
+  }
+
+  async getAsignatura(codigo: string): Promise<boolean> {
+    try {
+      const asignaturaRef = collection(this.firestore, 'asignaturas');
+      const q = query(asignaturaRef, where('codigo', '==', codigo));
+      const snapshot = await getDocs(q);
+
+      // Si hay resultados en la consulta, significa que la asignatura existe
+      return !snapshot.empty;
+    } catch (error) {
+      console.error('Error verificando la asignatura en Firestore:', error);
+      return false;
     }
   }
 }
